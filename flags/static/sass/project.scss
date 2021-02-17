@@ -35,3 +35,9 @@ $red: #b94a48;
   border-color: $dark-pink;
   color: $red;
 }
+
+.test-div {
+  background-color: $pink;
+  border-color: $dark-pink;
+  display: flex;
+}
