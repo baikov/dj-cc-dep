@@ -16,6 +16,7 @@ urlpatterns = [
     path("users/", include("flags.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("countries/", include("countries.urls", namespace="countries")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
