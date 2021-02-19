@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{flag.name}}</h1>
+    <div>
+    <p>Пропорции: {{flag.proportion}}</p>
+    <p>Страна: {{flag.country.name}}</p>
+    <p>Континент: {{flag.country.get_continent_display}}</p>
+    <p>Страна: {{flag.country.capital_name}}</p>
+    <p>Валюта: {{flag.country.currency_name}} | {{flag.country.currency_code}} | {{flag.country.currency_simbol}}</p>
+    </div>
+{% endblock content %}

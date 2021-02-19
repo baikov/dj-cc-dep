@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Флаги</h1>
+    <div class="test">
+    {% for flag in flags %}
+        <a href="{% url 'countries:flag-detail' flag.slug %}">
+            {{ flag.title }}
+        </a>
+    {% endfor %}
+    </div>
+{% endblock content %}

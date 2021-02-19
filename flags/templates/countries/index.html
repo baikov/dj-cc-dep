@@ -1,10 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Страны</h1>
+    <h1>Страны и флаги</h1>
     <div class="test-div">
     {% for country in countries %}
-        <div>{{ country }}</div>
+        <div>
+            <a href="{% url 'countries:country-detail' country.slug %}">
+                {{ country.name }}
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="test-div">
+    {% for flag in flags %}
+        <div>
+            <a href="{% url 'countries:flag-detail' flag.slug %}">
+                {{ flag.title }}
+            </a>
+        </div>
     {% endfor %}
     </div>
 {% endblock content %}

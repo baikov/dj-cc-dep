@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{country.name}} ({{country.conventional_long_name}})</h1>
+    <div>
+    <p>Континент: {{country.get_continent_display}}</p>
+    <p>Столица: {{country.capital_name}}</p>
+    <p>Валюта: {{country.currency_name}} | {{country.currency_code}} | {{country.currency_simbol}}</p>
+    {% for flag in flags %}
+        <a href="{% url 'countries:flag-detail' flag.slug %}">
+        {{flag.title}}
+        </a>
+        {{flag.name}}
+        <p>{{flag.short_description}}</p>
+        <p>{{flag.emoji}}</p>
+    {%endfor%}
+    </div>
+{% endblock content %}
