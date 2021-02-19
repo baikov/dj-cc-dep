@@ -36,8 +36,15 @@ $red: #b94a48;
   color: $red;
 }
 
-.test-div {
-  background-color: $pink;
-  border-color: $dark-pink;
+body {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  flex-grow: 1;
+}
+.country_info{
+  font-size: 14px;
+  line-height: 16px;
 }

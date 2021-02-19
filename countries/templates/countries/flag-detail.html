@@ -1,12 +1,94 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{flag.name}}</h1>
+    <h1>{{flag.meta_h1}}</h1>
+    <div class="row">
+        <div class="col-md-7 col-sm-12 col-xs-12">
+            <img src="https://placehold.it/500x400" alt="">
+            <p>Пропорции: {{flag.proportion}}</p>
+            <p>Цвета: {% for color in flag.colors %}{{color}}, {% endfor %}</p>
+        </div>
+        <div class="col-md-5 col-sm-12 col-xs-12">
+            <table class="table table-striped table-hover table-sm country_info">
+                <thead>
+                    <tr>
+                        <th colspan=2>Информация о стране {{flag.country.name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Континент</td>
+                        <td>{{flag.country.get_continent_display}}</td>
+                    </tr>
+                    <tr>
+                        <td>Столица</td>
+                        <td>{{flag.country.capital_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Валюта</td>
+                        <td>{{flag.country.currency_name}}, {{flag.country.currency_code}}, {{flag.country.currency_simbol}}</td>
+                    </tr>
+                    <tr>
+                        <td>Официальное название страны</td>
+                        <td>{{flag.country.conventional_long_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Официальное название на местном языке</td>
+                        <td>{{flag.country.local_long_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Короткое название на местном языке</td>
+                        <td>{{flag.country.local_short_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Гимн</td>
+                        <td>
+                            <audio controls>
+                                <source src="{{flag.country.anthem}}">
+                                <p>Ваш браузер не поддерживает аудио</p>
+                            </audio>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Девиз</td>
+                        <td>{{flag.country.motto}}</td>
+                    </tr>
+                    <tr>
+                        <td>Официальный язык</td>
+                        <td>{{flag.country.official_language}}</td>
+                    </tr>
+                    <tr>
+                        <td>Национальный язык</td>
+                        <td>{{flag.country.national_language}}</td>
+                    </tr>
+                    <tr>
+                        <td>Интернет-домен</td>
+                        <td>{{flag.country.internet_tld}}</td>
+                    </tr>
+                    <tr>
+                        <td>Код страны ISO</td>
+                        <td>{{flag.country.iso_code_a2}}, {{flag.country.iso_code_a3}}, {{flag.country.iso_code_num}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div>
-    <p>Пропорции: {{flag.proportion}}</p>
-    <p>Страна: {{flag.country.name}}</p>
-    <p>Континент: {{flag.country.get_continent_display}}</p>
-    <p>Страна: {{flag.country.capital_name}}</p>
-    <p>Валюта: {{flag.country.currency_name}} | {{flag.country.currency_code}} | {{flag.country.currency_simbol}}</p>
+        <p>
+            {{flag.short_description}}
+        </p>
     </div>
 {% endblock content %}
+
+{# SEO block #}
+{% block meta_title %}{{flag.meta_title}}{% endblock meta_title %}
+
+{% block meta_description %}{{flag.meta_description}}{% endblock meta_description %}
+
+{% block meta_keywords %}{{flag.meta_keywords}}{% endblock meta_keywords %}
+
+{% block meta_robots %}
+{% if flag.is_index %}index,{% else %}noindex,{% endif %}
+{% if flag.is_follow %}follow{% else %}nofollow{% endif %}
+{% endblock meta_robots %}
