@@ -4,7 +4,8 @@ from django.contrib.postgres.fields import ArrayField
 class Seo (models.Model):
     class Meta:
         abstract = True
-        
+    
+    slug = models.SlugField(max_length=100, unique=True,)
     meta_title = models.CharField(verbose_name='SEO Title', max_length=250, blank=True)
     meta_description = models.TextField(
         max_length=400, verbose_name='SEO Description', blank=True)
@@ -18,7 +19,15 @@ class Seo (models.Model):
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
 
-class Country (models.Model):
+
+class CustomQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(is_published=True)
+
+    # def featured(self):
+    #     return self.filter(is_highlighted=True)
+
+class Country (Seo, models.Model):
 
     class Continents(models.TextChoices):  	  	  	  	  	  
         AFRICA = 'AF', 'Африка'
@@ -51,7 +60,7 @@ class Country (models.Model):
     iso_code_a3 = models.CharField(verbose_name='ISO код (3alpha)', max_length=3, blank=True)
     iso_code_num = models.CharField(verbose_name='ISO код (numeric)', max_length=4, blank=True)
 
-    slug = models.SlugField(max_length=100, unique=True,)
+    objects = CustomQuerySet.as_manager()
 
     def __str__(self):
         return self.name
@@ -59,7 +68,6 @@ class Country (models.Model):
 class Flag(Seo, models.Model):
     country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='flags')
     title = models.CharField(verbose_name='Заголовок', max_length=250)
-    slug = models.SlugField(max_length=100, unique=True,)
     name = models.CharField(verbose_name='Название', max_length=250, blank=True)
     date = models.DateField(verbose_name='Дата утверждения', blank=True,)
     # use_for = models.CharField(verbose_name='Название', max_length=250, blank=True)
@@ -70,5 +78,7 @@ class Flag(Seo, models.Model):
     short_description = models.TextField(
         max_length=550, verbose_name='Краткое описание', blank=True)
 
+    objects = CustomQuerySet.as_manager()
+    
     def __str__(self):
         return self.title
