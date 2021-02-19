@@ -6,7 +6,7 @@
     {% for country in countries %}
         <a href="{% url 'countries:country-detail' country.slug %}">
             {{ country.name }} | {{ country.capital_name }} | {{ country.get_continent_display }}
-        </a>
+        </a>{% if not country.is_published %}Черновик{%endif%}
     {% endfor %}
     </div>
 {% endblock content %}
