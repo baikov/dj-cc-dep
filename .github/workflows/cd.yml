@@ -40,10 +40,10 @@ jobs:
     needs: pytest
     runs-on: ubuntu-latest
     steps:
-      - name: Docker up via SSH
-        uses: fifsky/ssh-action@master
         run:   echo ::set-env name=REPO_NAME::$(echo $GITHUB_REF | awk -F / '{print $3}')
         shell: bash
+      - name: Docker up via SSH
+        uses: fifsky/ssh-action@master
         with:
           command: |
             cd /home/www/dj-cc-dep/
