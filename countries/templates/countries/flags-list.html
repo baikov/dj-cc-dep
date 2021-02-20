@@ -2,11 +2,16 @@
 
 {% block content %}
     <h1>Флаги</h1>
-    <div class="test">
+
     {% for flag in flags %}
-        <a href="{% url 'countries:flag-detail' flag.slug %}">
-            {{ flag.title }}
-        </a>
+        <div class="card" style="width: 18rem;">
+          <img src="https://placehold.it/200x200" class="card-img-top" alt="{{ flag.title }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ flag.title }}</h5>
+            <p class="card-text">{{ flag.name }}</p>
+            <a href="{% url 'countries:flag-detail' flag.slug %}" class="btn btn-primary">Подробнее</a>
+          </div>
+        </div>
     {% endfor %}
-    </div>
+
 {% endblock content %}

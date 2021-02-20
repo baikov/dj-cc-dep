@@ -1,4 +1,4 @@
-name: CI
+name: Test and Deploy to prod
 
 # Enable Buildkit and let compose use it to speed up image building
 env:
@@ -6,35 +6,13 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
 
 on:
-  pull_request:
-    branches: [ "dev" ]
-    paths-ignore: [ "docs/**" ]
 
   push:
-    branches: [ "dev" ]
+    branches: [ "master" ]
     paths-ignore: [ "docs/**" ]
 
 
 jobs:
-  flake8:
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Checkout Code Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-      - name: Install flake8
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8
-
-      - name: Lint with flake8
-        run: flake8
 
 # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:
@@ -57,3 +35,23 @@ jobs:
 
       - name: Tear down the Stack
         run:  docker-compose -f local.yml down
+
+  deploy:
+    needs: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker up via SSH
+        uses: fifsky/ssh-action@master
+        run:   echo ::set-env name=REPO_NAME::$(echo $GITHUB_REF | awk -F / '{print $3}')
+        shell: bash
+        with:
+          command: |
+            cd /home/www/dj-cc-dep/
+            docker-compose -f production.yml down
+            git pull
+            docker-compose -f production.yml build
+            docker-compose -f production.yml up -d
+          host: ${{ secrets.HOST }}
+          user: root
+          #key: ${{ secrets.PRIVATE_KEY}}
+          pass: ${{ secrets.SSH_PWD }}
