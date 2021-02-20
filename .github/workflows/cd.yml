@@ -41,7 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         run:   echo ::set-env name=REPO_NAME::$(echo $GITHUB_REF | awk -F / '{print $3}')
-        shell: bash
       - name: Docker up via SSH
         uses: fifsky/ssh-action@master
         with:
