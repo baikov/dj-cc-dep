@@ -5,7 +5,18 @@
 
     {% for flag in flags %}
         <div class="card" style="width: 18rem;">
-          <img src="https://placehold.it/200x200" class="card-img-top" alt="{{ flag.title }}">
+          <picture>
+                <source type="image/webp"
+                        srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.webp">
+                <source type="image/png"
+                        srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.png">
+
+                <img src="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg"
+                    alt="{{ flag.title }}" 
+                    title="{{ flag.title }} {{flag.name}} - картинка"
+                    class="card-img-top">
+            </picture>
+          
           <div class="card-body">
             <h5 class="card-title">{{ flag.title }}</h5>
             <p class="card-text">{{ flag.name }}</p>

@@ -4,9 +4,43 @@
     <h1>{{flag.meta_h1}}</h1>
     <div class="row">
         <div class="col-md-7 col-sm-12 col-xs-12">
-            <img src="https://placehold.it/500x400" alt="">
+
+            <picture>
+                <source type="image/webp"
+                        media="(min-width: 1921px)" 
+                        srcset="https://flagcdn.com/w1280/{{flag.country.iso_code_a2|lower}}.webp">
+                <source type="image/png" 
+                        media="(min-width: 1921px)" 
+                        srcset="https://flagcdn.com/w1280/{{flag.country.iso_code_a2|lower}}.png">
+
+                <source type="image/webp" 
+                        media="(min-width: 1281px) and (max-width: 1920px)" 
+                        srcset="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.webp">
+                <source type="image/png" 
+                        media="(min-width: 1281px) and (max-width: 1920px)" 
+                        srcset="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.png">
+
+                <source type="image/webp"
+                        media="(max-width: 460px)"
+                        srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.webp">
+                <source type="image/png"
+                        media="(max-width: 460px)"
+                        srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.png">
+
+                <img src="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg"
+                    alt="{{ flag.title }}" 
+                    title="{{ flag.title }} {{flag.name}} - картинка"
+                    class="img-fluid img-thumbnail">
+            </picture>
+
+
+
             <p>Пропорции: {{flag.proportion}}</p>
             <p>Цвета: {% for color in flag.colors %}{{color}}, {% endfor %}</p>
+            <p>Утвержден: {{flag.date|date:"d.m.Y"}}</p>
+            <p>Фигуры: {{flag.figure}}</p>
+            <p>emoji: {{flag.emoji}}</p>
+            <p></p>
         </div>
         <div class="col-md-5 col-sm-12 col-xs-12">
             <table class="table table-striped table-hover table-sm country_info">
@@ -76,8 +110,13 @@
 
     <div>
         <p>
-            {{flag.short_description}}
+            {{flag.short_description|safe}}
         </p>
+    </div>
+
+    <div class="section-download">
+        <h2>Скачать {{ flag.title }} в форматах .png .jpg .svg</h2>
+        <a href="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg">.jpg (640px)</a>
     </div>
 {% endblock content %}
 

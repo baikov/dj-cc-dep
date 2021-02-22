@@ -1,3 +1,7 @@
+img {
+  max-width: 100%;
+  height: auto; }
+
 .alert-debug {
   background-color: #fff;
   border-color: #d6e9c6;
