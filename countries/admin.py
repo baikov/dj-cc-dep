@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Country, Flag
+from .models import Country, Flag, Color
 from django.forms import TextInput, Textarea
 from django.db import models
 
@@ -37,11 +37,18 @@ class CountryAdmin(admin.ModelAdmin):
         models.CharField: {'widget': TextInput(attrs={'size':'100'})},
     }
 
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ('color_group', 'hex', 'rgb', 'cmyk')
+    search_fields = ['hex', 'rgb']
+    list_filter = ['color_group']
+    
+
 class FlagAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('title', 'slug', 'is_published')
     search_fields = ['title']
     readonly_fields = ['updated_date', 'created_date']
+    filter_horizontal = ('colors',)
     fieldsets = [
         (None, {
                 'fields': [
@@ -68,3 +75,4 @@ class FlagAdmin(admin.ModelAdmin):
 
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Flag, FlagAdmin)
+admin.site.register(Color, ColorAdmin)
