@@ -33,14 +33,30 @@
                     class="img-fluid img-thumbnail">
             </picture>
 
-
-
+            <table class="table table-striped table-hover table-sm country_info">
+                <thead>
+                    <tr>
+                        <th>Цвет</th>
+                        <th>HEX</th>
+                        <th>RGB</th>
+                        <th>CMYK</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for color in flag.colors.all %}
+                    <tr>
+                        <td style="background-color:#{{color.hex}};">{{color.get_color_group_display}}</td>
+                        <td>#{{color.hex|upper}}</td>
+                        <td>{%for val in color.rgb%}{{val}}{% if not forloop.last %}, {% endif %}{%endfor%}</td>
+                        <td>{%for val in color.cmyk%}{{val}}%{% if not forloop.last %}, {% endif %}{%endfor%}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
             <p>Пропорции: {{flag.proportion}}</p>
-            <p>Цвета: {% for color in flag.colors %}{{color}}, {% endfor %}</p>
             <p>Утвержден: {{flag.date|date:"d.m.Y"}}</p>
             <p>Фигуры: {{flag.figure}}</p>
             <p>emoji: {{flag.emoji}}</p>
-            <p></p>
         </div>
         <div class="col-md-5 col-sm-12 col-xs-12">
             <table class="table table-striped table-hover table-sm country_info">
