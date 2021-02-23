@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import ValidationError
+
+from utils.color import Colorize
 
 class Seo (models.Model):
     class Meta:
@@ -65,6 +68,56 @@ class Country (Seo, models.Model):
     def __str__(self):
         return self.name
 
+class Color(models.Model):
+
+    class Colors(models.TextChoices):  	  	  	  	  	  
+        RED = 'red', 'Красный'
+        ORANGE = 'orange', 'Оранжевый'
+        YELLOW = 'yellow', 'Желтый'
+        GREEN = 'green', 'Зеленый'
+        BLUE = 'blue', 'Синий'
+        PURPLE = 'purple', 'Фиолетовый'
+        BLACK = 'black', 'Черный'
+        BROWN = 'brown', 'Коричневый'
+        MAROON = 'maroon', 'Бордовый'
+        PINK = 'pink', 'Розовый'
+        WHITE = 'white', 'Белый'
+        EMPTY = 'NO', ''
+    # name = models.CharField(verbose_name='Название', max_length=250)
+    color_group = models.CharField(verbose_name='Группа цветов', 
+                                choices=Colors.choices,
+                                default=Colors.EMPTY,
+                                max_length=50,
+                                )
+    hex = models.CharField(verbose_name='HEX', max_length=7, unique=True, blank=True)
+    rgb = ArrayField(models.SmallIntegerField(), blank=True, size=3, verbose_name='RGB')
+    cmyk = ArrayField(models.SmallIntegerField(), blank=True, size=4, verbose_name='CMYK')
+    pantone = models.CharField(verbose_name='Pantone', max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+
+        if self.cmyk:
+            color = Colorize(cmyk=self.cmyk)
+
+        if self.hex:
+            color = Colorize(hex=self.hex)
+
+        if self.rgb:
+            color = Colorize(self.rgb)
+
+        self.hex = color.hex
+        self.rgb = color.rgb
+        self.cmyk = color.cmyk
+
+        super(Color, self).save(*args, **kwargs)
+
+    def clean(self):
+        if not self.rgb and not self.hex and not self.cmyk:
+            raise ValidationError({'rgb': 'Одно из полей должно быть заполнено'})
+    
+    def __str__(self):
+        return f'{self.color_group}: #{self.hex}'
+
 class Flag(Seo, models.Model):
     country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='flags')
     title = models.CharField(verbose_name='Заголовок', max_length=250)
@@ -72,11 +125,12 @@ class Flag(Seo, models.Model):
     date = models.DateField(verbose_name='Дата утверждения', blank=True,)
     # use_for = models.CharField(verbose_name='Название', max_length=250, blank=True)
     proportion = models.CharField(verbose_name='Пропорции', max_length=10, blank=True)
-    colors = ArrayField(models.CharField(max_length=200), blank=True, null=True)
+    # colors = ArrayField(models.CharField(max_length=200), blank=True, null=True)
     figure = models.CharField(verbose_name='Фигура на флаге', max_length=250, blank=True)
     emoji = models.CharField(verbose_name='Эмоджи', max_length=20, blank=True)
     short_description = models.TextField(
         max_length=550, verbose_name='Краткое описание', blank=True)
+    colors = models.ManyToManyField(Color, related_name='flags', verbose_name='Цвета', blank=True)
 
     objects = CustomQuerySet.as_manager()
     
