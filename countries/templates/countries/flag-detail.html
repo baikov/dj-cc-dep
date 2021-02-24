@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load my_filter %}
 {% block content %}
     <h1>{{flag.meta_h1}}</h1>
     <div class="row">
@@ -56,7 +56,26 @@
             <p>Количество цветов: {{flag.colors.count}}</p>
             <p>Пропорции: {{flag.proportion}}</p>
             <p>Утвержден: {{flag.date|date:"d.m.Y"}}</p>
-            <p>Фигуры: {{flag.figure}}</p>
+            <p>Элементы на флаге: 
+            {% if flag.is_motto %}{{ flag|get_name:'is_motto' }},{% endif %}
+            {% if flag.is_country_name %}{{ flag|get_name:'is_country_name' }},{% endif %}
+            {% if flag.is_emblem %}{{ flag|get_name:'is_emblem' }},{% endif %}
+            {% if flag.is_crescent %}{{ flag|get_name:'is_crescent' }},{% endif %}
+            {% if flag.is_star %}{{ flag|get_name:'is_star' }},{% endif %}
+            {% if flag.is_animal %}{{ flag|get_name:'is_animal' }},{% endif %}
+            {% if flag.is_bird %}{{ flag|get_name:'is_bird' }},{% endif %}
+            {% if flag.is_crown %}{{ flag|get_name:'is_crown' }},{% endif %}
+            {% if flag.is_weapon %}{{ flag|get_name:'is_weapon' }},{% endif %}
+            {% if flag.is_sun %}{{ flag|get_name:'is_sun' }},{% endif %}
+            {% if flag.is_plant %}{{ flag|get_name:'is_plant' }},{% endif %}
+            {% if flag.is_circle %}{{ flag|get_name:'is_circle' }},{% endif %}
+            {% if flag.is_triangle %}{{ flag|get_name:'is_triangle' }},{% endif %}
+            {% if flag.is_cross %}{{ flag|get_name:'is_cross' }},{% endif %}
+            {% if flag.is_diamond %}{{ flag|get_name:'is_diamond' }},{% endif %}
+            {% if flag.is_horizontal_stripes %}{{ flag|get_name:'is_horizontal_stripes' }},{% endif %}
+            {% if flag.is_vertical_stripes %}{{ flag|get_name:'is_vertical_stripes' }},{% endif %}
+            {% if flag.is_diagonal_stripes %}{{ flag|get_name:'is_diagonal_stripes' }}{% endif %}
+            </p>
             <p>emoji: {{flag.emoji}}</p>
         </div>
         <div class="col-md-5 col-sm-12 col-xs-12">
