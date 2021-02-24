@@ -48,8 +48,17 @@ class FlagAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {
                 'fields': [
-                    'country', 'title', 'slug', 'name', 'date', 'proportion',
-                    'colors', 'figure', 'emoji', 'short_description',
+                    'country', 'title', 'slug', 'name', 'date', 'flag_day', 'proportion',
+                    'colors', 'emoji', 'short_description',
+                    ]
+                }),
+        ('На флаге', {
+                'classes': ('collapse', 'wide', 'extrapretty'),
+                'fields': [
+                    ('is_horizontal_stripes', 'is_vertical_stripes', 'is_diagonal_stripes'),
+                    ('is_motto', 'is_country_name', 'is_emblem'),
+                    ('is_crescent', 'is_star', 'is_animal', 'is_bird', 'is_crown', 'is_weapon', 'is_sun', 'is_plant'),
+                    ('is_circle', 'is_triangle', 'is_cross', 'is_diamond')
                     ]
                 }),
         ('SEO', {

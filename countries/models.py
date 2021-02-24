@@ -118,18 +118,37 @@ class Color(models.Model):
 
 
 class Flag(Seo, models.Model):
+
     country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='flags')
     title = models.CharField(verbose_name='Заголовок', max_length=250)
     name = models.CharField(verbose_name='Название', max_length=250, blank=True)
     date = models.DateField(verbose_name='Дата утверждения', blank=True,)
     # use_for = models.CharField(verbose_name='Название', max_length=250, blank=True)
     proportion = models.CharField(verbose_name='Пропорции', max_length=10, blank=True)
-    # colors = ArrayField(models.CharField(max_length=200), blank=True, null=True)
-    figure = models.CharField(verbose_name='Фигура на флаге', max_length=250, blank=True)
     emoji = models.CharField(verbose_name='Эмоджи', max_length=20, blank=True)
-    short_description = models.TextField(
-        max_length=550, verbose_name='Краткое описание', blank=True)
+    short_description = models.TextField(max_length=550, verbose_name='Краткое описание', blank=True)
     colors = models.ManyToManyField(Color, related_name='flags', verbose_name='Цвета', blank=True)
+    flag_day = models.DateField(verbose_name='День флага', blank=True,)
+
+    # Characteristics
+    is_horizontal_stripes = models.BooleanField(verbose_name='Горизонтальные полосы', default=False)
+    is_vertical_stripes = models.BooleanField(verbose_name='Вертикальные полосы', default=False)
+    is_diagonal_stripes = models.BooleanField(verbose_name='Диагональные полосы', default=False)
+    is_motto = models.BooleanField(verbose_name='Девиз', default=False)
+    is_country_name = models.BooleanField(verbose_name='Название страны', default=False)
+    is_crescent = models.BooleanField(verbose_name='Полумесяц', default=False)
+    is_star = models.BooleanField(verbose_name='Звезда', default=False)
+    is_emblem = models.BooleanField(verbose_name='Герб', default=False)
+    is_animal = models.BooleanField(verbose_name='Животное', default=False)
+    is_bird = models.BooleanField(verbose_name='Птица', default=False)
+    is_crown = models.BooleanField(verbose_name='Корона', default=False)
+    is_weapon = models.BooleanField(verbose_name='Оружие', default=False)
+    is_sun = models.BooleanField(verbose_name='Солнце', default=False)
+    is_plant = models.BooleanField(verbose_name='Растение', default=False)
+    is_circle = models.BooleanField(verbose_name='Круг', default=False)
+    is_triangle = models.BooleanField(verbose_name='Треугольник', default=False)
+    is_cross = models.BooleanField(verbose_name='Крест', default=False)
+    is_diamond = models.BooleanField(verbose_name='Ромб', default=False)
 
     objects = CustomQuerySet.as_manager()
 
