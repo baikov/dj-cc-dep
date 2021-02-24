@@ -4,10 +4,11 @@ from django.core.exceptions import ValidationError
 
 from utils.color import Colorize
 
+
 class Seo (models.Model):
     class Meta:
         abstract = True
-    
+
     slug = models.SlugField(max_length=100, unique=True,)
     meta_title = models.CharField(verbose_name='SEO Title', max_length=250, blank=True)
     meta_description = models.TextField(
@@ -30,9 +31,10 @@ class CustomQuerySet(models.QuerySet):
     # def featured(self):
     #     return self.filter(is_highlighted=True)
 
+
 class Country (Seo, models.Model):
 
-    class Continents(models.TextChoices):  	  	  	  	  	  
+    class Continents (models.TextChoices):
         AFRICA = 'AF', 'Африка'
         ASIA = 'AS', 'Евразия (Азия)'
         EUROPE = 'EU', 'Евразия (Европа)'
@@ -46,11 +48,9 @@ class Country (Seo, models.Model):
     local_long_name = models.CharField(verbose_name='Официальное название на местном языке', max_length=250, blank=True)
     local_short_name = models.CharField(verbose_name='Короткое название на местном языке', max_length=250, blank=True)
     capital_name = models.CharField(verbose_name='Столица', max_length=250, blank=True)
-    continent = models.CharField(verbose_name='Континент', 
-                                choices=Continents.choices,
-                                default=Continents.EMPTY,
-                                max_length=50,
-                                )
+    continent = models.CharField(verbose_name='Континент', choices=Continents.choices, default=Continents.EMPTY,
+                                 max_length=50,
+                                 )
     anthem = models.URLField(verbose_name='Гимн', max_length=250, blank=True)
     motto = models.CharField(verbose_name='Девиз', max_length=250, blank=True)
     official_language = models.CharField(verbose_name='Официальный язык', max_length=50, blank=True)
@@ -68,9 +68,10 @@ class Country (Seo, models.Model):
     def __str__(self):
         return self.name
 
+
 class Color(models.Model):
 
-    class Colors(models.TextChoices):  	  	  	  	  	  
+    class Colors(models.TextChoices):
         RED = 'red', 'Красный'
         ORANGE = 'orange', 'Оранжевый'
         YELLOW = 'yellow', 'Желтый'
@@ -84,11 +85,8 @@ class Color(models.Model):
         WHITE = 'white', 'Белый'
         EMPTY = 'NO', ''
     # name = models.CharField(verbose_name='Название', max_length=250)
-    color_group = models.CharField(verbose_name='Группа цветов', 
-                                choices=Colors.choices,
-                                default=Colors.EMPTY,
-                                max_length=50,
-                                )
+    color_group = models.CharField(verbose_name='Группа цветов', choices=Colors.choices,
+                                   default=Colors.EMPTY, max_length=50,)
     hex = models.CharField(verbose_name='HEX', max_length=7, unique=True, blank=True)
     rgb = ArrayField(models.SmallIntegerField(), blank=True, size=3, verbose_name='RGB')
     cmyk = ArrayField(models.SmallIntegerField(), blank=True, size=4, verbose_name='CMYK')
@@ -114,9 +112,10 @@ class Color(models.Model):
     def clean(self):
         if not self.rgb and not self.hex and not self.cmyk:
             raise ValidationError({'rgb': 'Одно из полей должно быть заполнено'})
-    
+
     def __str__(self):
         return f'{self.color_group}: #{self.hex}'
+
 
 class Flag(Seo, models.Model):
     country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='flags')
@@ -133,6 +132,6 @@ class Flag(Seo, models.Model):
     colors = models.ManyToManyField(Color, related_name='flags', verbose_name='Цвета', blank=True)
 
     objects = CustomQuerySet.as_manager()
-    
+
     def __str__(self):
         return self.title

@@ -16,6 +16,7 @@ def index(request):
     context = {'countries': homepage_countries, 'flags': homepage_flags}
     return render(request, 'countries/index.html', context)
 
+
 class CountryListView(ListView):
     model = Country
     template_name = 'countries/countries-list.html'
@@ -27,7 +28,7 @@ class CountryListView(ListView):
         # limit = 40
         if not self.request.user.is_superuser:
             countries = countries.published()
-        return countries.order_by('-name') #[:limit]
+        return countries.order_by('-name')  # [:limit]
 
 
 class FlagListView(ListView):
@@ -54,6 +55,7 @@ class CountryDetailView(DetailView):
         if not self.request.user.is_superuser and not self.object.is_published:
             raise Http404
         return context
+
 
 class FlagDetailView(DetailView):
     model = Flag
