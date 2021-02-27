@@ -49,7 +49,8 @@ class FlagAdmin(admin.ModelAdmin):
         (None, {
                 'fields': [
                     'country', 'title', 'slug', 'name', 'date', 'flag_day', 'proportion',
-                    'colors', 'emoji', 'short_description',
+                    'colors', 'emoji', 'short_description', 'construction_image', 'design_description',
+                    'history_text', 'flag_facts', 'usage_description',
                     ]
                 }),
         ('На флаге', {
@@ -62,6 +63,7 @@ class FlagAdmin(admin.ModelAdmin):
                     ]
                 }),
         ('SEO', {
+                'classes': ('collapse', 'wide'),
                 'fields': [
                     'meta_title', 'meta_description', 'meta_keywords',
                     'meta_h1', 'is_published', 'is_index', 'is_follow',

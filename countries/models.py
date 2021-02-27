@@ -117,6 +117,10 @@ class Color(models.Model):
         return f'{self.color_group}: #{self.hex}'
 
 
+# class FlagTags(models.Model):
+#     pass
+
+
 class Flag(Seo, models.Model):
 
     country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='flags')
@@ -129,6 +133,13 @@ class Flag(Seo, models.Model):
     short_description = models.TextField(max_length=550, verbose_name='Краткое описание', blank=True)
     colors = models.ManyToManyField(Color, related_name='flags', verbose_name='Цвета', blank=True)
     flag_day = models.DateField(verbose_name='День флага', blank=True,)
+
+    # Text fields
+    construction_image = models.ImageField(verbose_name='Дизайн флага', blank=True,)
+    design_description = models.TextField(verbose_name='Описание дизайна', blank=True,)
+    history_text = models.TextField(verbose_name='История флага', blank=True,)
+    flag_facts = models.TextField(verbose_name='Интересное о флаге', blank=True,)
+    usage_description = models.TextField(verbose_name='Использование дизайна', blank=True,)
 
     # Characteristics
     is_horizontal_stripes = models.BooleanField(verbose_name='Горизонтальные полосы', default=False)
@@ -154,3 +165,6 @@ class Flag(Seo, models.Model):
 
     def __str__(self):
         return self.title
+
+# class Flag(models.Model):
+#     pass
