@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% load i18n my_filter %}
+
 {% block content %}
 
 <div class="py-5 bg-light">
     <div class="container">
-        <h1>{{flag.meta_h1}}</h1>
-        <p>
+        <h1 class="py-3">{{flag.meta_h1}}</h1>
         <div class="row">
-            <div class="col-md-7 col-sm-12 col-xs-12">
-
+            <div class="col-md-5 col-sm-12 col-xs-12">
                 <picture>
                     <source type="image/webp"
                             media="(min-width: 1921px)" 
@@ -36,7 +35,26 @@
                         title="{{ flag.title }} {{flag.name}} - картинка"
                         class="img-fluid img-thumbnail">
                 </picture>
+            </div>
+            <div class="col-md-7 col-sm-12 col-xs-12">
+                <p>{{ flag.title }} утвержден {% language 'ru' %}{{flag.date|date:"j E Y"}}{% endlanguage %}. Флаг имеет пропорции {{flag.proportion}} и содержит {{flag.colors.count}} цвета.</p>
+                <p>
+                    {{flag.short_description|safe}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{# Colors & design #}
+<div class="py-5">
+    <div class="container">
+        <h2>Цвета и дизайн {{flag.title}}</h2>
 
+        <div class="row">
+            <div class="col-md-7 col-sm-12 col-xs-12">
+                {{flag.design_description|safe}}
+            </div>
+            <div class="col-md-5 col-sm-12 col-xs-12">
                 <table class="table table-striped table-hover table-sm country_info">
                     <thead>
                         <tr>
@@ -57,33 +75,47 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                <p>Количество цветов: {{flag.colors.count}}</p>
-                <p>Пропорции: {{flag.proportion}}</p>
-                <p>Утвержден: {{flag.date|date:"d.m.Y"}}</p>
-                <p>Элементы на флаге: 
-                {% if flag.is_motto %}{{ flag|get_name:'is_motto' }},{% endif %}
-                {% if flag.is_country_name %}{{ flag|get_name:'is_country_name' }},{% endif %}
-                {% if flag.is_emblem %}{{ flag|get_name:'is_emblem' }},{% endif %}
-                {% if flag.is_crescent %}{{ flag|get_name:'is_crescent' }},{% endif %}
-                {% if flag.is_star %}{{ flag|get_name:'is_star' }},{% endif %}
-                {% if flag.is_animal %}{{ flag|get_name:'is_animal' }},{% endif %}
-                {% if flag.is_bird %}{{ flag|get_name:'is_bird' }},{% endif %}
-                {% if flag.is_crown %}{{ flag|get_name:'is_crown' }},{% endif %}
-                {% if flag.is_weapon %}{{ flag|get_name:'is_weapon' }},{% endif %}
-                {% if flag.is_sun %}{{ flag|get_name:'is_sun' }},{% endif %}
-                {% if flag.is_plant %}{{ flag|get_name:'is_plant' }},{% endif %}
-                {% if flag.is_circle %}{{ flag|get_name:'is_circle' }},{% endif %}
-                {% if flag.is_triangle %}{{ flag|get_name:'is_triangle' }},{% endif %}
-                {% if flag.is_cross %}{{ flag|get_name:'is_cross' }},{% endif %}
-                {% if flag.is_diamond %}{{ flag|get_name:'is_diamond' }},{% endif %}
-                {% if flag.is_horizontal_stripes %}{{ flag|get_name:'is_horizontal_stripes' }},{% endif %}
-                {% if flag.is_vertical_stripes %}{{ flag|get_name:'is_vertical_stripes' }},{% endif %}
-                {% if flag.is_diagonal_stripes %}{{ flag|get_name:'is_diagonal_stripes' }}{% endif %}
-                </p>
-                <p>emoji: {{flag.emoji}}</p>
+                <figure class="figure">
+                    <img src="{{flag.construction_image.url}}" class="figure-img img-fluid">
+                    <figcaption class="figure-caption text-right">{{flag.title}}: схема</figcaption>
+                </figure>
+                
             </div>
-            <div class="col-md-5 col-sm-12 col-xs-12">
-                <p>{{ flag.title }} утвержден {% language 'ru' %}{{flag.date|date:"j E Y"}}{% endlanguage %}. Флаг имеет пропорции {{flag.proportion}} и содержит {{flag.colors.count}} цвета.</p>
+        </div>
+    </div>
+</div>
+{# History #}
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            {{flag.history_text|safe}}
+        </div>
+    </div>
+</div>
+
+
+<div class="py-5">
+    <div class="container">
+        <p>
+            {{flag.short_description|safe}}
+        </p>
+    </div>
+</div>
+
+<div class="py-5 bg-success section-download">
+    <div class="container">
+        <h2>Скачать {{ flag.title }} в форматах .png .jpg .svg</h2>
+        <a href="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg">.jpg (640px)</a>
+    </div>
+</div>
+
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div id="svgMap"></div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
                 <table class="table table-striped table-hover table-sm country_info">
                     <thead>
                         <tr>
@@ -151,20 +183,298 @@
     </div>
 </div>
 
-<div class="py-5">
-    <div class="container">
-        <p>
-            {{flag.short_description|safe}}
-        </p>
-    </div>
-</div>
-
-<div class="py-5 bg-success section-download">
-    <div class="container">
-        <h2>Скачать {{ flag.title }} в форматах .png .jpg .svg</h2>
-        <a href="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg">.jpg (640px)</a>
-    </div>
-</div>
+<style>
+            .svgMap-map-wrapper{
+                background: #fff;
+                color: #111;
+                border: 1px solid #eee;
+            }
+            #svgMap-map-country-{{flag.country.iso_code_a2}} {
+                fill: #28a745;
+            }
+        </style>
+<script>
+        var svgMapCountryNamesRU = {
+            AF: 'Афганистан',
+            AX: 'Аландские о-ва',
+            AL: 'Албания',
+            DZ: 'Алжир',
+            AS: 'Американское Самоа',
+            AD: 'Андорра',
+            AO: 'Ангола',
+            AI: 'Ангилья',
+            AQ: 'Антарктида',
+            AG: 'Антигуа и Барбуда',
+            AR: 'Аргентина',
+            AM: 'Армения',
+            AW: 'Аруба',
+            AU: 'Австралия',
+            AT: 'Австрия',
+            AZ: 'Азербайджан',
+            BS: 'Багамы',
+            BH: 'Бахрейн',
+            BD: 'Бангладеш',
+            BB: 'Барбадос',
+            BY: 'Беларусь',
+            BE: 'Бельгия',
+            BZ: 'Белиз',
+            BJ: 'Бенин',
+            BM: 'Бермуды',
+            BT: 'Бутан',
+            BO: 'Боливия',
+            BA: 'Босния и Герцеговина',
+            BW: 'Ботсвана',
+            BR: 'Бразилия',
+            IO: 'Британская территория в Индийском океане',
+            VG: 'Виргинские о-ва (Британские)',
+            BN: 'Бруней-Даруссалам',
+            BG: 'Болгария',
+            BF: 'Буркина-Фасо',
+            BI: 'Бурунди',
+            KH: 'Камбоджа',
+            CM: 'Камерун',
+            CA: 'Канада',
+            CV: 'Кабо-Верде',
+            BQ: 'Бонэйр, Синт-Эстатиус и Саба',
+            KY: 'Каймановы о-ва',
+            CF: 'ЦАР',
+            TD: 'Чад',
+            CL: 'Чили',
+            CN: 'Китай',
+            CX: 'о-в Рождества',
+            CC: 'Кокосовые о-ва',
+            CO: 'Колумбия',
+            KM: 'Коморы',
+            CG: 'Конго - Браззавиль',
+            CK: 'Острова Кука',
+            CR: 'Коста-Рика',
+            HR: 'Хорватия',
+            CU: 'Куба',
+            CW: 'Кюрасао',
+            CY: 'Кипр',
+            CZ: 'Чехия',
+            CD: 'Конго - Киншаса',
+            DK: 'Дания',
+            DJ: 'Джибути',
+            DM: 'Доминика',
+            DO: 'Доминиканская Республика',
+            EC: 'Эквадор',
+            EG: 'Египет',
+            SV: 'Сальвадор',
+            GQ: 'Экваториальная Гвинея',
+            ER: 'Эритрея',
+            EE: 'Эстония',
+            ET: 'Эфиопия',
+            FK: 'Фолклендские о-ва',
+            FO: 'Фарерские о-ва',
+            FM: 'Федеративные Штаты Микронезии',
+            FJ: 'Фиджи',
+            FI: 'Финляндия',
+            FR: 'Франция',
+            GF: 'Французская Гвиана',
+            PF: 'Французская Полинезия',
+            TF: 'Французские Южные территории',
+            GA: 'Габон',
+            GM: 'Гамбия',
+            GE: 'Грузия',
+            DE: 'Германия',
+            GH: 'Гана',
+            GI: 'Гибралтар',
+            GR: 'Греция',
+            GL: 'Гренландия',
+            GD: 'Гренада',
+            GP: 'Гваделупа',
+            GU: 'Гуам',
+            GT: 'Гватемала',
+            GN: 'Гвинея',
+            GW: 'Гвинея-Бисау',
+            GY: 'Гайана',
+            HT: 'Гаити',
+            HN: 'Гондурас',
+            HK: 'Гонконг (специальный административный район)',
+            HU: 'Венгрия',
+            IS: 'Исландия',
+            IN: 'Индия',
+            ID: 'Индонезия',
+            IR: 'Иран',
+            IQ: 'Ирак',
+            IE: 'Ирландия',
+            IM: 'о-в Мэн',
+            IL: 'Израиль',
+            IT: 'Италия',
+            CI: 'Кот-д’Ивуар',
+            JM: 'Ямайка',
+            JP: 'Япония',
+            JE: 'Джерси',
+            JO: 'Иордания',
+            KZ: 'Казахстан',
+            KE: 'Кения',
+            KI: 'Кирибати',
+            XK: 'Косово',
+            KW: 'Кувейт',
+            KG: 'Киргизия',
+            LA: 'Лаос',
+            LV: 'Латвия',
+            LB: 'Ливан',
+            LS: 'Лесото',
+            LR: 'Либерия',
+            LY: 'Ливия',
+            LI: 'Лихтенштейн',
+            LT: 'Литва',
+            LU: 'Люксембург',
+            MO: 'Макао (специальный административный район)',
+            MK: 'Македония',
+            MG: 'Мадагаскар',
+            MW: 'Малави',
+            MY: 'Малайзия',
+            MV: 'Мальдивы',
+            ML: 'Мали',
+            MT: 'Мальта',
+            MH: 'Маршалловы Острова',
+            MQ: 'Мартиника',
+            MR: 'Мавритания',
+            MU: 'Маврикий',
+            YT: 'Майотта',
+            MX: 'Мексика',
+            MD: 'Молдова',
+            MC: 'Монако',
+            MN: 'Монголия',
+            ME: 'Черногория',
+            MS: 'Монтсеррат',
+            MA: 'Марокко',
+            MZ: 'Мозамбик',
+            MM: 'Мьянма (Бирма)',
+            NA: 'Намибия',
+            NR: 'Науру',
+            NP: 'Непал',
+            NL: 'Нидерланды',
+            NC: 'Новая Каледония',
+            NZ: 'Новая Зеландия',
+            NI: 'Никарагуа',
+            NE: 'Нигер',
+            NG: 'Нигерия',
+            NU: 'Ниуэ',
+            NF: 'о-в Норфолк',
+            KP: 'КНДР',
+            MP: 'Северные Марианские о-ва',
+            NO: 'Норвегия',
+            OM: 'Оман',
+            PK: 'Пакистан',
+            PW: 'Палау',
+            PS: 'Палестинские территории',
+            PA: 'Панама',
+            PG: 'Папуа – Новая Гвинея',
+            PY: 'Парагвай',
+            PE: 'Перу',
+            PH: 'Филиппины',
+            PN: 'острова Питкэрн',
+            PL: 'Польша',
+            PT: 'Португалия',
+            PR: 'Пуэрто-Рико',
+            QA: 'Катар',
+            RE: 'Реюньон',
+            RO: 'Румыния',
+            RU: 'Россия',
+            RW: 'Руанда',
+            SH: 'о-в Св. Елены',
+            KN: 'Сент-Китс и Невис',
+            LC: 'Сент-Люсия',
+            PM: 'Сен-Пьер и Микелон',
+            VC: 'Сент-Винсент и Гренадины',
+            WS: 'Самоа',
+            SM: 'Сан-Марино',
+            ST: 'Сан-Томе и Принсипи',
+            SA: 'Саудовская Аравия',
+            SN: 'Сенегал',
+            RS: 'Сербия',
+            SC: 'Сейшельские Острова',
+            SL: 'Сьерра-Леоне',
+            SG: 'Сингапур',
+            SX: 'Синт-Мартен',
+            SK: 'Словакия',
+            SI: 'Словения',
+            SB: 'Соломоновы Острова',
+            SO: 'Сомали',
+            ZA: 'ЮАР',
+            GS: 'Южная Георгия и Южные Сандвичевы о-ва',
+            KR: 'Республика Корея',
+            SS: 'Южный Судан',
+            ES: 'Испания',
+            LK: 'Шри-Ланка',
+            SD: 'Судан',
+            SR: 'Суринам',
+            SJ: 'Шпицберген и Ян-Майен',
+            SZ: 'Свазиленд',
+            SE: 'Швеция',
+            CH: 'Швейцария',
+            SY: 'Сирия',
+            TW: 'Тайвань',
+            TJ: 'Таджикистан',
+            TZ: 'Танзания',
+            TH: 'Таиланд',
+            TL: 'Восточный Тимор',
+            TG: 'Того',
+            TK: 'Токелау',
+            TO: 'Тонга',
+            TT: 'Тринидад и Тобаго',
+            TN: 'Тунис',
+            TR: 'Турция',
+            TM: 'Туркменистан',
+            TC: 'о-ва Тёркс и Кайкос',
+            TV: 'Тувалу',
+            UG: 'Уганда',
+            UA: 'Украина',
+            AE: 'ОАЭ',
+            GB: 'Великобритания',
+            US: 'Соединенные Штаты',
+            UM: 'Внешние малые о-ва (США)',
+            VI: 'Виргинские о-ва (США)',
+            UY: 'Уругвай',
+            UZ: 'Узбекистан',
+            VU: 'Вануату',
+            VA: 'Ватикан',
+            VE: 'Венесуэла',
+            VN: 'Вьетнам',
+            WF: 'Уоллис и Футуна',
+            EH: 'Западная Сахара',
+            YE: 'Йемен',
+            ZM: 'Замбия',
+            ZW: 'Зимбабве'
+            };
+        var svgMapDataPopulation = {
+            data: {
+                area: {
+                name: 'Площадь',
+                format: '{0} км<sup>2</sup>',
+                thousandSeparator: ' ',
+                },
+                population: {
+                name: 'Население',
+                thousandSeparator: ' '
+                },
+                density: {
+                name: 'Столица',
+                format: '{0}',
+                thousandSeparator: '',
+                
+                }
+            },
+            applyData: 'area',
+            values: {
+                ES: {area: 2, population: 14848905, density: '{{flag.country.capital_name}}'},
+            }
+        }
+        new svgMap({
+          targetElementID: 'svgMap',
+          data: svgMapDataPopulation,
+          countryNames: svgMapCountryNamesRU,
+          flagType: 'emoji',
+          colorNoData: '#eeeeee',
+          noDataText: '',
+          mouseWheelZoomEnabled: false,
+          initialZoom: 1.2,
+        });
+</script>
 
 {% endblock content %}
 
