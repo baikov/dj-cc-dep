@@ -1,36 +1,39 @@
 {% extends "base.html" %}
 {% load i18n my_filter %}
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
 
 {% block content %}
 
 <div class="py-5 bg-light">
     <div class="container">
         <h1 class="py-3">{{flag.meta_h1}}</h1>
+
         <div class="row">
             <div class="col-md-5 col-sm-12 col-xs-12">
                 <picture>
                     <source type="image/webp"
                             media="(min-width: 1921px)" 
-                            srcset="https://flagcdn.com/w1280/{{flag.country.iso_code_a2|lower}}.webp">
+                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w1280/{{flag.country.iso_code_a2}}.webp">
                     <source type="image/png" 
                             media="(min-width: 1921px)" 
-                            srcset="https://flagcdn.com/w1280/{{flag.country.iso_code_a2|lower}}.png">
+                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w1280/{{flag.country.iso_code_a2|lower}}.png">
 
                     <source type="image/webp" 
                             media="(min-width: 1281px) and (max-width: 1920px)" 
-                            srcset="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.webp">
+                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w640/{{flag.country.iso_code_a2|lower}}.webp">
                     <source type="image/png" 
                             media="(min-width: 1281px) and (max-width: 1920px)" 
-                            srcset="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.png">
+                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w640/{{flag.country.iso_code_a2|lower}}.png">
 
                     <source type="image/webp"
                             media="(max-width: 460px)"
-                            srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.webp">
+                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w320/{{flag.country.iso_code_a2|lower}}.webp">
                     <source type="image/png"
                             media="(max-width: 460px)"
-                            srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.png">
+                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w320/{{flag.country.iso_code_a2|lower}}.png">
 
-                    <img src="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg"
+                    <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w640/{{flag.country.iso_code_a2|lower}}.png"
                         alt="{{ flag.title }}" 
                         title="{{ flag.title }} {{flag.name}} - картинка"
                         class="img-fluid img-thumbnail">
