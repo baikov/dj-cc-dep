@@ -5,7 +5,7 @@ from django.db.models import signals
 from django.dispatch import receiver
 
 from utils.color import Colorize
-from utils.get_img import get_flag_img
+from utils.get_img import get_flag_img, get_historical_flag_img
 
 
 class Seo (models.Model):
@@ -36,6 +36,10 @@ class CustomQuerySet(models.QuerySet):
 
 
 class Country (Seo, models.Model):
+
+    class Meta:
+        verbose_name = 'Страна'
+        verbose_name_plural = 'Страны'
 
     class Continents (models.TextChoices):
         AFRICA = 'AF', 'Африка'
@@ -73,6 +77,10 @@ class Country (Seo, models.Model):
 
 
 class Color(models.Model):
+
+    class Meta:
+        verbose_name = 'Цвет'
+        verbose_name_plural = 'Цвета флагов'
 
     class Colors(models.TextChoices):
         RED = 'red', 'Красный'
@@ -120,11 +128,39 @@ class Color(models.Model):
         return f'{self.color_group}: #{self.hex}'
 
 
-# class FlagTags(models.Model):
+# class FlagTag(models.Model):
 #     pass
+
+class HistoricalFlag(models.Model):
+
+    class Meta:
+        verbose_name = 'Флаг'
+        verbose_name_plural = 'Исторические флаги'
+
+    country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='h_flags')
+    title = models.CharField(verbose_name='Заголовок', max_length=150, blank=True)
+    from_year = models.PositiveSmallIntegerField(verbose_name='Год принятия',)
+    to_year = models.PositiveSmallIntegerField(verbose_name='Год отмены',)
+    # period = models.CharField(verbose_name='Период использования', max_length=100, blank=True)
+    # image = models.ImageField(blank=True)
+    image_url = models.URLField(verbose_name='Ссылка на изображение', max_length=300)
+    description = models.TextField(verbose_name='Описание', blank=True,)
+
+    def __str__(self):
+        return f'{self.from_year}-{self.to_year} {self.title}'
+
+
+@receiver(signals.post_save, sender=HistoricalFlag)
+def on_create_historical_flag(sender, instance, **kwargs):
+    if kwargs['created']:
+        get_historical_flag_img(instance.image_url, instance.from_year, instance.to_year, instance.country.iso_code_a2)
 
 
 class Flag(Seo, models.Model):
+
+    class Meta:
+        verbose_name = 'Национальный флаг'
+        verbose_name_plural = 'Национальные флаги'
 
     country = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name='flags')
     title = models.CharField(verbose_name='Заголовок', max_length=250)
@@ -176,7 +212,3 @@ def on_create_or_updated_flag(sender, instance, **kwargs):
         get_flag_img(instance.iso_code_a2)
     # else:
     #     get_flag_img(instance.iso_code_a2)
-
-
-# class Flag(models.Model):
-#     pass
