@@ -1,8 +1,11 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
+from django.db.models import signals
+from django.dispatch import receiver
 
 from utils.color import Colorize
+from utils.get_img import get_flag_img
 
 
 class Seo (models.Model):
@@ -165,6 +168,15 @@ class Flag(Seo, models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(signals.post_save, sender=Country)
+def on_create_or_updated_flag(sender, instance, **kwargs):
+    if kwargs['created']:
+        get_flag_img(instance.iso_code_a2)
+    # else:
+    #     get_flag_img(instance.iso_code_a2)
+
 
 # class Flag(models.Model):
 #     pass
