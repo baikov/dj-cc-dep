@@ -26,3 +26,12 @@ def get_flag_img(iso2):
         r = requests.get(url)
         with open(f'{dest}/{iso2}.{format}', "wb") as f:
             f.write(r.content)
+
+
+def get_historical_flag_img(url, from_year, to_year, country_iso2):
+    iso2 = country_iso2.lower()
+    path = f'flags/media/historical-flags/{iso2}'
+    Path(path).mkdir(parents=True, exist_ok=True)
+    r = requests.get(url)
+    with open(f'{path}/{iso2}-{from_year}-{to_year}.svg', "wb") as f:
+        f.write(r.content)
