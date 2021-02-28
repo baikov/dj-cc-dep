@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Country, Flag, Color
+from .models import Country, Flag, Color, HistoricalFlag
 from django.forms import TextInput
 from django.db import models
 
@@ -39,12 +39,29 @@ class ColorAdmin(admin.ModelAdmin):
     list_filter = ['color_group']
 
 
+class HistoricalFlagAdmin(admin.ModelAdmin):
+    list_display = ('country', 'title', 'from_year', 'to_year')
+    search_fields = ['country', 'title']
+    list_filter = ['country']
+    raw_id_fields = ('country',)
+    fieldsets = [
+        (None, {
+                'fields': [
+                    'country', 'title', 'image_url',
+                    ('from_year', 'to_year'),
+                    'description'
+                    ]
+                }),
+    ]
+
+
 class FlagAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('title', 'slug', 'is_published')
     search_fields = ['title']
     readonly_fields = ['updated_date', 'created_date']
     filter_horizontal = ('colors',)
+    raw_id_fields = ('country',)
     fieldsets = [
         (None, {
                 'fields': [
@@ -85,3 +102,4 @@ class FlagAdmin(admin.ModelAdmin):
 admin.site.register(Country, CountryAdmin)
 admin.site.register(Flag, FlagAdmin)
 admin.site.register(Color, ColorAdmin)
+admin.site.register(HistoricalFlag, HistoricalFlagAdmin)
