@@ -6,9 +6,9 @@ from django.db import models
 
 class CountryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ('name', 'slug', 'is_published')
-    list_filter = ['name']
-    search_fields = ['name']
+    list_display = ('name', 'iso_code_a2', 'slug', 'is_published')
+    # list_filter = ['name']
+    search_fields = ['name', 'iso_code_a2']
     readonly_fields = ['updated_date', 'created_date']
     fieldsets = [
         (None, {'fields': ['name', 'slug', 'conventional_long_name', 'local_long_name', 'local_short_name',
@@ -40,14 +40,14 @@ class ColorAdmin(admin.ModelAdmin):
 
 
 class HistoricalFlagAdmin(admin.ModelAdmin):
-    list_display = ('country', 'title', 'from_year', 'to_year')
-    search_fields = ['country', 'title']
-    list_filter = ['country']
+    list_display = ('from_year', 'to_year', 'country', 'title')
+    search_fields = ['title', 'from_year', 'country__name']
+    list_filter = ['country__name']
     raw_id_fields = ('country',)
     fieldsets = [
         (None, {
                 'fields': [
-                    'country', 'title', 'image_url',
+                    'country', 'title', 'image_url', 'image_path',
                     ('from_year', 'to_year'),
                     'description'
                     ]
@@ -57,11 +57,12 @@ class HistoricalFlagAdmin(admin.ModelAdmin):
 
 class FlagAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'slug', 'is_published')
-    search_fields = ['title']
+    list_display = ('title', 'slug', 'country', 'is_published')
+    search_fields = ['title', 'country__name']
+    list_filter = ['colors__color_group']
+    raw_id_fields = ('country',)
     readonly_fields = ['updated_date', 'created_date']
     filter_horizontal = ('colors',)
-    raw_id_fields = ('country',)
     fieldsets = [
         (None, {
                 'fields': [
