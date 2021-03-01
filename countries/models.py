@@ -1,11 +1,13 @@
+from config.settings.base import MEDIA_ROOT
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db.models import signals
+from django.db.models.fields import FilePathField
 from django.dispatch import receiver
 
 from utils.color import Colorize
-from utils.get_img import get_flag_img, get_historical_flag_img
+from utils.get_img import get_flag_img, get_historical_flag_img, delete_img
 
 
 class Seo (models.Model):
@@ -144,16 +146,25 @@ class HistoricalFlag(models.Model):
     # period = models.CharField(verbose_name='Период использования', max_length=100, blank=True)
     # image = models.ImageField(blank=True)
     image_url = models.URLField(verbose_name='Ссылка на изображение', max_length=300)
-    description = models.TextField(verbose_name='Описание', blank=True,)
+    image_path = FilePathField(path=f'{MEDIA_ROOT}/historical-flags', blank=True, recursive=True)
+    description = models.TextField(verbose_name='Описание', blank=True)
 
     def __str__(self):
         return f'{self.from_year}-{self.to_year} {self.title}'
 
 
-@receiver(signals.post_save, sender=HistoricalFlag)
+@receiver(signals.pre_save, sender=HistoricalFlag)
 def on_create_historical_flag(sender, instance, **kwargs):
-    if kwargs['created']:
-        get_historical_flag_img(instance.image_url, instance.from_year, instance.to_year, instance.country.iso_code_a2)
+    if not instance.image_url:
+        file = get_historical_flag_img(
+            instance.image_url, instance.from_year, instance.to_year, instance.country.iso_code_a2)
+    if not instance.image_path:
+        instance.image_path = f'{MEDIA_ROOT}/historical-flags/{file}'
+
+
+@receiver(signals.post_delete, sender=HistoricalFlag)
+def after_delete_historical_flag(sender, instance, **kwargs):
+    delete_img(instance.image_path)
 
 
 class Flag(Seo, models.Model):
