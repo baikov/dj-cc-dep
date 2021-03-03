@@ -5,8 +5,9 @@ from django.http import Http404
 # from django.urls import reverse
 from django.views.generic import ListView, DetailView
 # from django.views.generic.edit import UpdateView
+from django.db.models import Count
 
-from .models import Country, Flag, HistoricalFlag, BorderCountry
+from .models import Color, Country, Flag, HistoricalFlag, BorderCountry
 
 
 def index(request):
@@ -41,7 +42,7 @@ class FlagListView(ListView):
         flags = Flag.objects.all()
         if not self.request.user.is_superuser:
             flags = flags.published()
-        return flags.order_by('-country')
+        return flags.order_by('country__name')
 
 
 class CountryDetailView(DetailView):
@@ -78,3 +79,41 @@ class FlagDetailView(DetailView):
         context['heights'] = ['h20', 'h24', 'h40', 'h60', 'h80', 'h120', 'h240']
 
         return context
+
+
+class ColorsListView(ListView):
+    model = Color
+    template_name = 'countries/colors-list.html'
+    context_object_name = 'colors'
+
+    def get_queryset(self):
+        colors = Color.objects.all().order_by('color_group')
+        return colors
+
+
+def colors_group(request, color_group):
+    template_name = 'countries/colors-group.html'
+    # flags = Flag.objects.filter(colors__color_group=color_group)
+    url_color = color_group.split('-')
+    # flags = Flag.objects.filter(colors__color_group__in=url_color).distinct()
+
+    flags = Flag.objects.all()
+    for color in url_color:
+        flags = flags.filter(colors__color_group=color)
+    colors = Color.objects.filter(color_group__in=url_color).distinct('color_group')
+
+    context = {'flags': flags, 'colors': colors}
+    if flags:
+        return render(request, template_name, context)
+    else:
+        raise Http404
+
+
+def colors_count(request, color_count):
+    template_name = 'countries/colors-count.html'
+    flags = Flag.objects.annotate(num_colors=Count('colors')).filter(num_colors=color_count)
+    context = {'flags': flags, 'color_count': color_count}
+    if flags:
+        return render(request, template_name, context)
+    else:
+        raise Http404
