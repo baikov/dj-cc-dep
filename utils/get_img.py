@@ -16,23 +16,26 @@ def download_img(url, path, name):
 
 
 def get_flag_img(iso2):
-    width = [20, 40, 80, 160, 320, 640, 1280, 2560]
+    sizes = [
+        'w20', 'w40', 'w80', 'w160', 'w320', 'w640', 'w1280', 'w2560',
+        'h20', 'h24', 'h40', 'h60', 'h80', 'h120', 'h240'
+        ]
     bitmap = ['png', 'jpg', 'webp']
     vector = ['svg', 'ai', 'pdf', 'eps']
     cdn = 'https://flagcdn.com'
     save_to_path = 'flags/media/national-flags'
     iso2 = iso2.lower()
     for format in bitmap:
-        for size in width:
-            url = f'{cdn}/w{size}/{iso2}.{format}'
-            dest = f'{save_to_path}/{iso2}/w{size}'
-            file_name = f'{dest}/{iso2}.{format}'
+        for size in sizes:
+            url = f'{cdn}/{size}/{iso2}.{format}'
+            dest = f'{save_to_path}/{iso2}/{size}'
+            file_name = f'{iso2}.{format}'
             download_img(url, dest, file_name)
 
     for format in vector:
         url = f'{cdn}/{iso2}.{format}'
         dest = f'{save_to_path}/{iso2}'
-        file_name = f'{dest}/{iso2}.{format}'
+        file_name = f'{iso2}.{format}'
         download_img(url, dest, file_name)
 
 
