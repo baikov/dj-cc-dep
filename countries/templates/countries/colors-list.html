@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1>Цвета</h1>
+
+    <div class="row">
+    {% regroup colors by get_color_group_display as color_list %}
+    {# {% regroup colors by color_group as color_list %} #}
+
+    {% for group in color_list %}
+    <div class="card w-50">
+        <div class="card-body">
+            <h5 class="card-title">{{ group.grouper }}</h5>
+            <p class="card-text">Список флагов, в цветах которых присутствует <strong>{{ group.grouper|lower }}</strong></p>
+            <div class="colors">
+            {% for color in group.list %}
+                <div class="color-square" id="btn-tooltip" style="background-color:#{{ color.hex }}" data-toggle="tooltip" data-placement="top" title="#{{ color.hex }}"></div>
+            {% endfor %}
+            </div>
+            
+            <a href="{% url 'countries:colors-group' group.list.0.color_group %}">
+            Список флагов
+            </a>
+        </div>
+    </div>
+
+    {% endfor %}
+    </div>
+        <a href="{% url 'countries:colors-group' 'red-blue' %}">
+            Флаги красно-синие
+            </a>
+
+</div>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+{% endblock content %}
