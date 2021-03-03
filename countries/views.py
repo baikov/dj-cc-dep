@@ -74,4 +74,7 @@ class FlagDetailView(DetailView):
         context['neighbours'] = neighbours
         border_flags = Flag.objects.filter(country__in=border_countries)
         context['border_flags'] = border_flags
+        context['widths'] = ['w20', 'w40', 'w80', 'w160', 'w320', 'w640', 'w1280', 'w2560']
+        context['heights'] = ['h20', 'h24', 'h40', 'h60', 'h80', 'h120', 'h240']
+
         return context
