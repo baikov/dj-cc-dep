@@ -60,6 +60,8 @@ class Country (Seo, models.Model):
     continent = models.CharField(verbose_name='Континент', choices=Continents.choices, default=Continents.EMPTY,
                                  max_length=50,
                                  )
+    border_countries = models.ManyToManyField('self', verbose_name='Соседние страны', through='BorderCountry',
+                                              blank=True, symmetrical=False, related_name='border_to+')
     anthem = models.URLField(verbose_name='Гимн', max_length=250, blank=True)
     motto = models.CharField(verbose_name='Девиз', max_length=250, blank=True)
     official_language = models.CharField(verbose_name='Официальный язык', max_length=50, blank=True)
@@ -76,6 +78,35 @@ class Country (Seo, models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.iso_code_a2 = self.iso_code_a2.upper()
+        self.iso_code_a3 = self.iso_code_a3.upper()
+        super(Country, self).save(*args, **kwargs)
+
+
+@receiver(signals.post_save, sender=Country)
+def on_create_or_updated_flag(sender, instance, **kwargs):
+    if kwargs['created']:
+        get_flag_img(instance.iso_code_a2)
+    # else:
+    #     get_flag_img(instance.iso_code_a2)
+
+
+class BorderCountry(models.Model):
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='country')
+    border_country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='neighbour')
+    border = models.PositiveIntegerField(verbose_name='Протяженность границы', help_text='в метрах',)
+
+    class Meta:
+        unique_together = ('country', 'border_country')
+
+    def save(self, *args, **kwargs):
+        super(BorderCountry, self).save(*args, **kwargs)
+        neighbour, _ = BorderCountry.objects.get_or_create(country=self.border_country, border_country=self.country,)
+        if neighbour.border != self.border:
+            neighbour.border = self.border
+            neighbour.save()
 
 
 class Color(models.Model):
@@ -215,11 +246,3 @@ class Flag(Seo, models.Model):
 
     def __str__(self):
         return self.title
-
-
-@receiver(signals.post_save, sender=Country)
-def on_create_or_updated_flag(sender, instance, **kwargs):
-    if kwargs['created']:
-        get_flag_img(instance.iso_code_a2)
-    # else:
-    #     get_flag_img(instance.iso_code_a2)
