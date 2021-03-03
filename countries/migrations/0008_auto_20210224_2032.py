@@ -22,9 +22,9 @@ class Migration(migrations.Migration):
             field=models.DateField(blank=True, default=django.utils.timezone.now, verbose_name='День флага'),
             preserve_default=False,
         ),
-        migrations.AddField(
-            model_name='flag',
-            name='sripes',
-            field=multiselectfield.db.fields.MultiSelectField(choices=[('h', 'Горизонтальные'), ('v', 'Вертикальные'), ('d', 'Диагональные'), ('no', '')], default='no', max_length=50, verbose_name='Полосы на флаге'),
-        ),
+        # migrations.AddField(
+        #     model_name='flag',
+        #     name='sripes',
+        #     field=multiselectfield.db.fields.MultiSelectField(choices=[('h', 'Горизонтальные'), ('v', 'Вертикальные'), ('d', 'Диагональные'), ('no', '')], default='no', max_length=50, verbose_name='Полосы на флаге'),
+        # ),
     ]

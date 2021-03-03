@@ -10,10 +10,10 @@ class Migration(migrations.Migration):
         ('countries', '0008_auto_20210224_2032'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='flag',
-            name='figure',
-            field=multiselectfield.db.fields.MultiSelectField(blank=True, choices=[('crescent', 'Полумесяц'), ('star', 'Звезда'), ('emblem', 'Герб'), ('animal', 'Животное'), ('bird', 'Птица'), ('crown', 'Корона'), ('weapon', 'Оружие'), ('sun', 'Солнце'), ('plant', 'Растение'), ('circle', 'Круг'), ('triangle', 'Треугольник'), ('cross', 'Крест')], max_length=50, verbose_name='Фигура на флаге'),
-        ),
-    ]
+    # operations = [
+    #     migrations.AddField(
+    #         model_name='flag',
+    #         name='figure',
+    #         field=multiselectfield.db.fields.MultiSelectField(blank=True, choices=[('crescent', 'Полумесяц'), ('star', 'Звезда'), ('emblem', 'Герб'), ('animal', 'Животное'), ('bird', 'Птица'), ('crown', 'Корона'), ('weapon', 'Оружие'), ('sun', 'Солнце'), ('plant', 'Растение'), ('circle', 'Круг'), ('triangle', 'Треугольник'), ('cross', 'Крест')], max_length=50, verbose_name='Фигура на флаге'),
+    #     ),
+    # ]
