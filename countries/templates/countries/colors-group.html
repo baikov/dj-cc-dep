@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Флаги стран содержащие 
+    {%if colors|length > 1 %}
+    {% for color in colors %}
+    {% if forloop.last and not forloop.first %} и {%else%}{%if not forloop.first %}, {%endif%}{% endif %}
+    {{color.get_color_group_display|lower}}
+    {% endfor %}
+    {%else%}
+    {{colors.0.get_color_group_display|lower}}
+    {%endif%}
+    цвет
+    </h1>
+    <div class="row">
+    {% for flag in flags %}
+    <div class="col-md-3 col-sm-6 col-sx-12 pb-3">
+        <div class="card">
+          <picture>
+                <source type="image/webp"
+                        srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.webp">
+                <source type="image/png"
+                        srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.png">
+
+                <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.png"
+                    alt="{{ flag.title }}" 
+                    title="{{ flag.title }} {{flag.name}} - картинка"
+                    class="card-img-top">
+            </picture>
+          
+          <div class="card-body">
+            <h5 class="card-title">{{ flag.title }}</h5>
+            <p class="card-text">{{ flag.name }}</p>
+            <a href="{% url 'countries:flag-detail' flag.slug %}" class="btn btn-primary">Подробнее</a>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+
+</div>
+{% endblock content %}
+
+{# SEO block #}
+{% block meta_title %}
+{%if colors|length > 1 %}
+{% for color in colors %}
+{% if forloop.last and not forloop.first %} и {%else%}{%if not forloop.first %}, {%endif%}{% endif %}
+{{color.get_color_group_display|capfirst}}
+{% endfor %}
+{%else%}
+{{colors.0.get_color_group_display|capfirst}}
+{%endif%}
+цвет в составе государственных флагов стран | AllFlags.ru
+{% endblock meta_title %}
+
+{# Meta description #}
+{% block meta_description %}
+{%if colors|length > 1 %}
+{% for color in colors %}
+{% if forloop.last and not forloop.first %} и {%else%}{%if not forloop.first %}, {%endif%}{% endif %}
+{{color.get_color_group_display|upper}}
+{% endfor %}
+{%else%}
+{{colors.0.get_color_group_display|upper}}
+{%endif%}
+цвет {%if colors|length > 15 %}довольно часто {%else%}редко {%endif%}входит в состав цветов государственных флагов стран. На AllFlags мы составили полный 
+список из {{colors|length}} флагов с этими цветами
+{% endblock meta_description %}
+
+{# Meta keywords #}
+{% block meta_keywords %}
+
+{% endblock meta_keywords %}
+
+{% block meta_robots %}
+index,follow
+{% endblock meta_robots %}
