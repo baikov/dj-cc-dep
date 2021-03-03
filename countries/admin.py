@@ -1,22 +1,33 @@
 from django.contrib import admin
-from .models import Country, Flag, Color, HistoricalFlag
+from .models import BorderCountry, Country, Flag, Color, HistoricalFlag
 from django.forms import TextInput
 from django.db import models
 
 
+class BorderCountryInline(admin.TabularInline):
+    model = BorderCountry
+    extra = 2
+    fk_name = 'country'
+    raw_id_fields = ('border_country',)
+
+
 class CountryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ('name', 'iso_code_a2', 'slug', 'is_published')
+    list_display = ('name', 'iso_code_a2', 'slug', 'is_published',)
     # list_filter = ['name']
     search_fields = ['name', 'iso_code_a2']
     readonly_fields = ['updated_date', 'created_date']
+    inlines = (BorderCountryInline,)
     fieldsets = [
         (None, {'fields': ['name', 'slug', 'conventional_long_name', 'local_long_name', 'local_short_name',
                            'capital_name', 'continent', 'anthem', 'motto', 'official_language', 'national_language',
-                           'internet_tld', 'currency_name', 'currency_code', 'currency_simbol', 'iso_code_a2',
-                           'iso_code_a3', 'iso_code_num',
+                           'internet_tld',
                            ]
                 }),
+        ('Данные о стране', {'fields': [
+                ('iso_code_a2', 'iso_code_a3', 'iso_code_num'),
+                ('currency_name', 'currency_code', 'currency_simbol'),
+        ]}),
         ('SEO', {'fields': ['meta_title', 'meta_description', 'meta_keywords', 'meta_h1', 'is_published', 'is_index',
                             'is_follow', 'created_date', 'updated_date',
                             ]
