@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n my_filter %}
 
 {% block content %}
 <div class="container">
@@ -12,11 +13,11 @@
         <a href="{% url 'countries:flag-detail' flag.slug %}">
           <picture>
                 <source type="image/webp"
-                        srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.webp">
+                        srcset="{{flag.country.iso_code_a2|get_img_path:'w320'}}.webp">
                 <source type="image/png"
-                        srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.png">
+                        srcset="{{flag.country.iso_code_a2|get_img_path:'w320'}}.png">
 
-                <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.png"
+                <img src="{{flag.country.iso_code_a2|get_img_path:'w320'}}.png"
                     alt="{{ flag.title }}" 
                     title="{{ flag.title }} {{flag.name}} - картинка"
                     class="card-img-top">

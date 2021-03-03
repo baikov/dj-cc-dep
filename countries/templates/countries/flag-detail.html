@@ -14,26 +14,26 @@
                 <picture>
                     <source type="image/webp"
                             media="(min-width: 1921px)" 
-                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w1280/{{flag.country.iso_code_a2}}.webp">
+                            srcset="{{flag.country.iso_code_a2|get_img_path:'w1280'}}.webp">
                     <source type="image/png" 
                             media="(min-width: 1921px)" 
-                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w1280/{{flag.country.iso_code_a2|lower}}.png">
+                            srcset="{{flag.country.iso_code_a2|get_img_path:'w1280'}}.png">
 
                     <source type="image/webp" 
                             media="(min-width: 1281px) and (max-width: 1920px)" 
-                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w640/{{flag.country.iso_code_a2|lower}}.webp">
+                            srcset="{{flag.country.iso_code_a2|get_img_path:'w640'}}.webp">
                     <source type="image/png" 
                             media="(min-width: 1281px) and (max-width: 1920px)" 
-                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w640/{{flag.country.iso_code_a2|lower}}.png">
+                            srcset="{{flag.country.iso_code_a2|get_img_path:'w640'}}.png">
 
                     <source type="image/webp"
                             media="(max-width: 460px)"
-                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w320/{{flag.country.iso_code_a2|lower}}.webp">
+                            srcset="{{flag.country.iso_code_a2|get_img_path:'w320'}}.webp">
                     <source type="image/png"
                             media="(max-width: 460px)"
-                            srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w320/{{flag.country.iso_code_a2|lower}}.png">
+                            srcset="{{flag.country.iso_code_a2|get_img_path:'w320'}}.png">
 
-                    <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w640/{{flag.country.iso_code_a2|lower}}.png"
+                    <img src="{{flag.country.iso_code_a2|get_img_path:'w640'}}.png"
                         alt="{{ flag.title }}" 
                         title="{{ flag.title }} {{flag.name}} - картинка"
                         class="img-fluid img-thumbnail">
@@ -140,7 +140,7 @@
         {% for flag in border_flags %}
             <div class="col-md-4 col-sm-6 col-sx-12 pb-3">
                 <div class="card">
-                    <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w320/{{flag.country.iso_code_a2|lower}}.png" class="card-img-top img-thumbnail">
+                    <img src="{{flag.country.iso_code_a2|get_img_path:'w320'}}.png" class="card-img-top img-thumbnail">
                     <div class="card-body">
                         <h4 class="card-title">
                             <a href="{% url 'countries:flag-detail' flag.slug %}">
@@ -158,12 +158,12 @@
         <h2>Скачать {{ flag.title|lower }} в форматах .png .jpg .svg</h2>
         <div><h4>Фиксированная ширина</h4>
         {% for size in widths %}
-            <a href="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/{{size}}/{{flag.country.iso_code_a2|lower}}.jpg" class="btn btn-outline-light">.jpg ({{size}})</a>
+            <a href="{{flag.country.iso_code_a2|get_img_path:size}}.jpg" class="btn btn-outline-light">.jpg ({{size}})</a>
         {% endfor %}
         </div>
         <div><h4>Фиксированная высота</h4>
         {% for size in heights %}
-            <a href="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/{{size}}/{{flag.country.iso_code_a2|lower}}.jpg" class="btn btn-outline-light">.jpg ({{size}})</a>
+            <a href="{{flag.country.iso_code_a2|get_img_path:size}}.jpg" class="btn btn-outline-light">.jpg ({{size}})</a>
         {% endfor %}
         </div>
     </div>
