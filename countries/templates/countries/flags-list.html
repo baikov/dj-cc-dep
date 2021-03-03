@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
     <h1>Флаги</h1>
-
+    <div class="row">
     {% for flag in flags %}
-        <div class="card" style="width: 18rem;">
+      <div class="col-md-3 col-sm-6 col-sx-12 pb-3">
+        <div class="card">
           <picture>
                 <source type="image/webp"
-                        srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.webp">
+                        srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.webp">
                 <source type="image/png"
-                        srcset="https://flagcdn.com/w320/{{flag.country.iso_code_a2|lower}}.png">
+                        srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.png">
 
-                <img src="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg"
+                <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.png"
                     alt="{{ flag.title }}" 
                     title="{{ flag.title }} {{flag.name}} - картинка"
                     class="card-img-top">
@@ -23,6 +25,8 @@
             <a href="{% url 'countries:flag-detail' flag.slug %}" class="btn btn-primary">Подробнее</a>
           </div>
         </div>
+      </div>
     {% endfor %}
-
+    </div>
+  </div>
 {% endblock content %}

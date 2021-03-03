@@ -141,8 +141,17 @@
 
 <div class="py-5 bg-success section-download">
     <div class="container">
-        <h2>Скачать {{ flag.title }} в форматах .png .jpg .svg</h2>
-        <a href="https://flagcdn.com/w640/{{flag.country.iso_code_a2|lower}}.jpg">.jpg (640px)</a>
+        <h2>Скачать {{ flag.title|lower }} в форматах .png .jpg .svg</h2>
+        <div><h4>Фиксированная ширина</h4>
+        {% for size in widths %}
+            <a href="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/{{size}}/{{flag.country.iso_code_a2|lower}}.jpg" class="btn btn-outline-light">.jpg ({{size}})</a>
+        {% endfor %}
+        </div>
+        <div><h4>Фиксированная высота</h4>
+        {% for size in heights %}
+            <a href="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/{{size}}/{{flag.country.iso_code_a2|lower}}.jpg" class="btn btn-outline-light">.jpg ({{size}})</a>
+        {% endfor %}
+        </div>
     </div>
 </div>
 
