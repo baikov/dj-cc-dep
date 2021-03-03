@@ -44,10 +44,20 @@ class CountryAdmin(admin.ModelAdmin):
     }
 
 
+class FlagInline(admin.TabularInline):
+    model = Flag.colors.through
+    extra = 1
+
+
 class ColorAdmin(admin.ModelAdmin):
-    list_display = ('color_group', 'hex', 'rgb', 'cmyk')
+    list_display = ('color_group', 'hex', 'rgb', 'cmyk', 'get_flags')
     search_fields = ['hex', 'rgb']
     list_filter = ['color_group']
+    inlines = [FlagInline]
+
+    def get_flags(self, obj):
+        return obj.flags.first()
+        # return obj.flags.all().values('title')
 
 
 class HistoricalFlagAdmin(admin.ModelAdmin):
