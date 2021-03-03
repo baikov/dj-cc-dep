@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('countries', '0009_flag_figure'),
+        ('countries', '0008_auto_20210224_2032'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='flag',
-            name='figure',
-        ),
-        migrations.RemoveField(
-            model_name='flag',
-            name='sripes',
-        ),
+        # migrations.RemoveField(
+        #     model_name='flag',
+        #     name='figure',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='flag',
+        #     name='sripes',
+        # ),
         migrations.AddField(
             model_name='flag',
             name='Горизонтальные',

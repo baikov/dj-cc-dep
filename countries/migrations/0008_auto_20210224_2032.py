@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.utils.timezone
-import multiselectfield.db.fields
+# import multiselectfield.db.fields
 
 
 class Migration(migrations.Migration):
