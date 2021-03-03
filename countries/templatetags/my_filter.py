@@ -1,4 +1,5 @@
 from django import template
+from config.settings.base import MEDIA_URL
 
 register = template.Library()
 
@@ -13,3 +14,9 @@ def get_name(object, field):
 def in_km(field):
     width = f'{field/1000} км'
     return width
+
+
+@register.filter()
+def get_img_path(object, size):
+    object = object.lower()
+    return f'{MEDIA_URL}/national-flags/{object}/{size}/{object}'
