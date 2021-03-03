@@ -6,7 +6,7 @@ from django.http import Http404
 from django.views.generic import ListView, DetailView
 # from django.views.generic.edit import UpdateView
 
-from .models import Country, Flag, HistoricalFlag
+from .models import Country, Flag, HistoricalFlag, BorderCountry
 
 
 def index(request):
@@ -63,7 +63,15 @@ class FlagDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        border_countries = []
         context['historical'] = HistoricalFlag.objects.filter(
             country__iso_code_a2=self.object.country.iso_code_a2).order_by('from_year')
 
+        neighbours = BorderCountry.objects.filter(country=self.object.country)
+        for row in neighbours:
+            border_countries.append(row.border_country)
+
+        context['neighbours'] = neighbours
+        border_flags = Flag.objects.filter(country__in=border_countries)
+        context['border_flags'] = border_flags
         return context
