@@ -40,7 +40,12 @@
                 </picture>
             </div>
             <div class="col-md-7 col-sm-12 col-xs-12">
-                <p>{{ flag.title }} утвержден {% language 'ru' %}{{flag.date|date:"j E Y"}}{% endlanguage %}. Флаг имеет пропорции {{flag.proportion}} и содержит {{flag.colors.count}} цвета.</p>
+                <p>{{ flag.title }} утвержден {% language 'ru' %}{{flag.date|date:"j E Y"}}{% endlanguage %}. 
+                Флаг имеет пропорции {{flag.proportion}} и содержит 
+                <a href="{% url 'countries:colors-count' flag.colors.count %}">
+                {{flag.colors.count}} цвета.
+                </a>
+                </p>
                 <p>
                     {{flag.short_description|safe}}
                 </p>
@@ -61,6 +66,7 @@
                 <table class="table table-striped table-hover table-sm country_info">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Цвет</th>
                             <th>HEX</th>
                             <th>RGB</th>
@@ -70,7 +76,14 @@
                     <tbody>
                     {% for color in flag.colors.all %}
                         <tr>
-                            <td style="background-color:#{{color.hex}};">{{color.get_color_group_display}}</td>
+                            <td style="background-color:#{{color.hex}};width:40px;">
+                            &nbsp;
+                            </td>
+                            <td>
+                                <a href="{% url 'countries:colors-group' color.color_group %}">
+                                    {{color.get_color_group_display}}
+                                </a>
+                            </td>
                             <td>#{{color.hex|upper}}</td>
                             <td>{%for val in color.rgb%}{{val}}{% if not forloop.last %}, {% endif %}{%endfor%}</td>
                             <td>{%for val in color.cmyk%}{{val}}%{% if not forloop.last %}, {% endif %}{%endfor%}</td>
@@ -78,6 +91,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {{color_groups}}
                 {% if flag.construction_image %}
                 
                 <figure class="figure">

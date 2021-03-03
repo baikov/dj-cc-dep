@@ -3,10 +3,13 @@
 {% block content %}
 <div class="container">
     <h1>Флаги</h1>
+    {# {% regroup flags by country|make_list|first as country_list %} #}
+    
     <div class="row">
     {% for flag in flags %}
       <div class="col-md-3 col-sm-6 col-sx-12 pb-3">
         <div class="card">
+        <a href="{% url 'countries:flag-detail' flag.slug %}">
           <picture>
                 <source type="image/webp"
                         srcset="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/h240/{{flag.country.iso_code_a2|lower}}.webp">
@@ -18,11 +21,11 @@
                     title="{{ flag.title }} {{flag.name}} - картинка"
                     class="card-img-top">
             </picture>
-          
+          </a>
           <div class="card-body">
-            <h5 class="card-title">{{ flag.title }}</h5>
+          <a href="{% url 'countries:flag-detail' flag.slug %}">
+            <h5 class="card-title">{{ flag.title }}</h5></a>
             <p class="card-text">{{ flag.name }}</p>
-            <a href="{% url 'countries:flag-detail' flag.slug %}" class="btn btn-primary">Подробнее</a>
           </div>
         </div>
       </div>
