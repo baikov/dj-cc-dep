@@ -78,11 +78,13 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% if flag.construction_image %}
+                
                 <figure class="figure">
                     <img src="{{flag.construction_image.url}}" class="figure-img img-fluid">
                     <figcaption class="figure-caption text-right">{{flag.title}}: схема</figcaption>
                 </figure>
-                
+                {% endif %}
             </div>
         </div>
     </div>
@@ -111,8 +113,29 @@
 <div class="py-5">
     <div class="container">
         <p>
-            {{flag.short_description|safe}}
+            {% for neighbour in neighbours %}
+                <p>{{neighbour.border_country}} - {{neighbour.border|in_km}}</p>
+            {% endfor %}
         </p>
+    </div>
+</div>
+{# Border countries flags #}
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+        {% for flag in border_flags %}
+            <div class="col-md-4 col-sm-6 col-sx-12 pb-3">
+                <div class="card">
+                    <img src="{{MEDIA_URL}}national-flags/{{flag.country.iso_code_a2}}/w320/{{flag.country.iso_code_a2|lower}}.png" class="card-img-top img-thumbnail">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="{% url 'countries:flag-detail' flag.slug %}">
+                        {{flag.title}}</a></h4>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
     </div>
 </div>
 
@@ -123,6 +146,7 @@
     </div>
 </div>
 
+{# Map #}
 <div class="py-5">
     <div class="container">
         <div class="row">
