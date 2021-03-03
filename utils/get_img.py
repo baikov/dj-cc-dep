@@ -11,6 +11,7 @@ def download_img(url, path, name):
     file = f'{path}/{name}'
     Path(path).mkdir(parents=True, exist_ok=True)
     r = requests.get(url)
+    # print(f'{url}: {r.status_code}')
     with open(file, 'wb') as f:
         f.write(r.content)
 
