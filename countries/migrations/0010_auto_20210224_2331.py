@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('countries', '0008_auto_20210224_2032'),
+        ('countries', '0009_flag_figure'),
     ]
 
     operations = [
