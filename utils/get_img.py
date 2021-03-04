@@ -1,6 +1,7 @@
 import requests
 from pathlib import Path
 import os
+from config.settings.base import MEDIA_ROOT
 
 
 def delete_img(file):
@@ -24,7 +25,7 @@ def get_flag_img(iso2):
     bitmap = ['png', 'jpg', 'webp']
     vector = ['svg', 'ai', 'pdf', 'eps']
     cdn = 'https://flagcdn.com'
-    save_to_path = 'flags/media/national-flags'
+    save_to_path = f'{MEDIA_ROOT}/national-flags'
     iso2 = iso2.lower()
     for format in bitmap:
         for size in sizes:
@@ -42,7 +43,7 @@ def get_flag_img(iso2):
 
 def get_historical_flag_img(url, from_year, to_year, country_iso2):
     iso2 = country_iso2.lower()
-    path = f'flags/media/historical-flags/{iso2}'
+    path = f'{MEDIA_ROOT}/historical-flags/{iso2}'
     file_name = f'{iso2}-{from_year}-{to_year}.svg'
     download_img(url, path, file_name)
 
