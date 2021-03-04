@@ -34,7 +34,8 @@ http:
       rule: "Host(`allflags.ru`) || Host(`www.allflags.ru`)"
       
       entryPoints:
-        - web-secure
+      #  - web-secure
+        - web
       middlewares:
         - csrf
       service: django
