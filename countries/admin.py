@@ -29,7 +29,7 @@ class CountryAdmin(admin.ModelAdmin):
                 ('currency_name', 'currency_code', 'currency_simbol'),
         ]}),
         ('SEO', {'fields': ['meta_title', 'meta_description', 'meta_keywords', 'meta_h1', 'is_published', 'is_index',
-                            'is_follow', 'created_date', 'updated_date',
+                            'is_follow', 'created_date', 'updated_date', 'dl_imgs',
                             ]
                  }),
     ]

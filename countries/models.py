@@ -73,6 +73,7 @@ class Country (Seo, models.Model):
     iso_code_a2 = models.CharField(verbose_name='ISO код (2alpha)', max_length=2, blank=True)
     iso_code_a3 = models.CharField(verbose_name='ISO код (3alpha)', max_length=3, blank=True)
     iso_code_num = models.CharField(verbose_name='ISO код (numeric)', max_length=4, blank=True)
+    dl_imgs = models.BooleanField(verbose_name='Скачать картинки флагов', default=False)
 
     objects = CustomQuerySet.as_manager()
 
@@ -87,7 +88,7 @@ class Country (Seo, models.Model):
 
 @receiver(signals.post_save, sender=Country)
 def on_create_or_updated_flag(sender, instance, **kwargs):
-    if kwargs['created']:
+    if kwargs['created'] or instance.dl_imgs:
         get_flag_img(instance.iso_code_a2)
     # else:
     #     get_flag_img(instance.iso_code_a2)
