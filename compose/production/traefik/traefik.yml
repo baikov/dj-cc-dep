@@ -41,6 +41,16 @@ http:
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
+    
+    web-media-router:
+      rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
+      entryPoints:
+        - web-secure
+      middlewares:
+        - csrf
+      service: django-media
+      tls:
+        certResolver: letsencrypt
 
     flower-secure-router:
       rule: "Host(`allflags.ru`)"
@@ -63,6 +73,11 @@ http:
       loadBalancer:
         servers:
           - url: http://django:5000
+
+    django-media:
+      loadBalancer:
+        servers:
+          - url: http://nginx:80
 
     flower:
       loadBalancer:
