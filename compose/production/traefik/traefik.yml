@@ -34,8 +34,7 @@ http:
       rule: "Host(`allflags.ru`) || Host(`www.allflags.ru`)"
       
       entryPoints:
-      #  - web-secure
-        - web
+        - web-secure
       middlewares:
         - csrf
       service: django
@@ -46,7 +45,8 @@ http:
     web-media-router:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       entryPoints:
-        - web-secure
+      #  - web-secure
+        - web
       middlewares:
         - csrf
       service: django-media
