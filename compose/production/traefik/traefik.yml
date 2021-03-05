@@ -18,8 +18,8 @@ entryPoints:
   flower:
     address: ":5555"
   
-  media:
-    address: ":80"
+  # media:
+  #   address: ":8888"
 
 certificatesResolvers:
   letsencrypt:
@@ -49,8 +49,8 @@ http:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
-      #  - web-secure
-        - media
+        - web-secure
+        # - media
 
       # middlewares:
       #   - csrf
@@ -83,7 +83,7 @@ http:
     media:
       loadBalancer:
         servers:
-          - url: http://nginx:80
+          - url: http://nginx:443
 
     flower:
       loadBalancer:
