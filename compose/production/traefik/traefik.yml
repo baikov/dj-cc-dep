@@ -67,7 +67,7 @@ http:
         - web-secure
       middlewares:
         - csrf
-      service: django
+      service: media
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
