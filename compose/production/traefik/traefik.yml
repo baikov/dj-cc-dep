@@ -25,8 +25,8 @@ entryPoints:
   traefik:
     address: ":8080"
   
-  # media:
-  #   address: ":8888"
+  media:
+    address: ":80"
 
 certificatesResolvers:
   letsencrypt:
@@ -62,9 +62,9 @@ http:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
-        - web
-        - web-secure
-        # - media
+        # - web
+        # - web-secure
+        - media
       middlewares:
         - csrf
       service: media
@@ -78,8 +78,8 @@ http:
       service: api@internal
       middlewares:
         - auth
-      tls:
-        certResolver: letsencrypt
+      # tls:
+      #   certResolver: letsencrypt
 
     flower-secure-router:
       rule: "Host(`allflags.ru`)"
