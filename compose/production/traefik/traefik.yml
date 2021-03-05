@@ -50,7 +50,7 @@ http:
       # rule: "Host(`allflags.ru`)"
       entryPoints:
         - web
-        # - web-secure
+        - web-secure
         # - media
       # middlewares:
       #   - csrf
