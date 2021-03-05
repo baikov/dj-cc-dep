@@ -5,11 +5,11 @@ entryPoints:
   web:
     # http
     address: ":80"
-    http:
-      # https://docs.traefik.io/routing/entrypoints/#entrypoint
-      redirections:
-        entryPoint:
-          to: web-secure
+    # http:
+    #   # https://docs.traefik.io/routing/entrypoints/#entrypoint
+    #   redirections:
+    #     entryPoint:
+    #       to: web-secure
 
   web-secure:
     # https
@@ -18,8 +18,8 @@ entryPoints:
   flower:
     address: ":5555"
   
-  media:
-    address: ":8888"
+  # media:
+  #   address: ":8888"
 
 certificatesResolvers:
   letsencrypt:
@@ -49,14 +49,14 @@ http:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
-        # - web
+        - web
         # - web-secure
-        - media
-      middlewares:
-        - csrf
+        # - media
+      # middlewares:
+      #   - csrf
       service: media
-      tls:
-        certResolver: letsencrypt
+      # tls:
+      #   certResolver: letsencrypt
 
     flower-secure-router:
       rule: "Host(`allflags.ru`)"
@@ -83,7 +83,7 @@ http:
     media:
       loadBalancer:
         servers:
-          - url: http://nginx:8888
+          - url: http://nginx:80
 
     flower:
       loadBalancer:
