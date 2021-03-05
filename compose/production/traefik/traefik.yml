@@ -40,7 +40,7 @@ http:
   routers:
 
     dashboard:
-      rule: Host(`allflags.ru`) && ("PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      rule: "Host(`allflags.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       service: api@internal
       middlewares:
         - csrf
@@ -61,7 +61,7 @@ http:
         certResolver: letsencrypt
     
     media:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
+      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
         # - web
