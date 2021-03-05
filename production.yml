@@ -47,7 +47,7 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
       - "0.0.0.0:5555:5555"
-      - "0.0.0.0:8888:8888"
+      # - "0.0.0.0:8888:8888"
 
   redis:
     image: redis:5.0
@@ -74,6 +74,11 @@ services:
     image: flags_production_nginx
     depends_on:
       - django
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=nginx"
+      - "traefik.frontend.rule=Host:allflags.ru;PathPrefix:/media"
+      - "traefik.port=80"
     volumes:
       # - production_django_media:/usr/share/nginx/media:ro
       - ./flags/media:/usr/share/nginx/media
