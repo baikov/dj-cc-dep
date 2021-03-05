@@ -74,6 +74,8 @@ services:
     image: flags_production_nginx
     depends_on:
       - traefik
+    ports:
+      - "8099:80"
     volumes:
       # - production_django_media:/usr/share/nginx/media:ro
       - ./flags/media:/usr/share/nginx/media
