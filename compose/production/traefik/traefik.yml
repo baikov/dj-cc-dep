@@ -17,6 +17,9 @@ entryPoints:
 
   flower:
     address: ":5555"
+  
+  media:
+    address: ":8888"
 
 certificatesResolvers:
   letsencrypt:
@@ -42,15 +45,16 @@ http:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
     
-    web-media-router:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
+    media:
+      # rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
+      rule: "Host(`allflags.ru`)"
       entryPoints:
-       - web-secure
-        # - web
+      #  - web-secure
+        - media
 
-      middlewares:
-        - csrf
-      service: django-media
+      # middlewares:
+      #   - csrf
+      service: media
       tls:
         certResolver: letsencrypt
 
@@ -76,10 +80,10 @@ http:
         servers:
           - url: http://django:5000
 
-    django-media:
+    media:
       loadBalancer:
         servers:
-          - url: http://nginx:80
+          - url: http://nginx:8888
 
     flower:
       loadBalancer:
