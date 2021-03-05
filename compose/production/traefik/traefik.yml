@@ -40,10 +40,10 @@ http:
   routers:
 
     dashboard:
-      rule: Host(`allflags.ru`) && PathPrefix(`/dashboard/`)
+      rule: Host(`allflags.ru`) && ("PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       service: api@internal
       middlewares:
-        # - csrf
+        - csrf
         - auth
       tls:
         certResolver: letsencrypt
