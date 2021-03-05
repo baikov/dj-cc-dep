@@ -3,6 +3,7 @@ log:
 
 api:
   dashboard: true
+  insecure: true
 
 entryPoints:
   web:
@@ -20,6 +21,9 @@ entryPoints:
 
   flower:
     address: ":5555"
+  
+  traefik:
+    address: ":8080"
   
   # media:
   #   address: ":8888"
@@ -66,6 +70,14 @@ http:
       service: media
       tls:
         certResolver: letsencrypt
+    
+    dashboard:
+      rule: Host(`allflags.ru`) && PathPrefix(`/dashboard`)
+      entrypoints:
+        - traefik
+      service: api@internal
+      middlewares:
+        - auth
 
     flower-secure-router:
       rule: "Host(`allflags.ru`)"
@@ -82,7 +94,7 @@ http:
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
         hostsProxyHeaders: ["X-CSRFToken"]
-
+    
     auth:
       basicAuth:
         users:
