@@ -73,12 +73,7 @@ services:
       dockerfile: ./compose/production/nginx/Dockerfile
     image: flags_production_nginx
     depends_on:
-      - django
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=nginx"
-      - "traefik.frontend.rule=Host:allflags.ru;PathPrefix:/media"
-      - "traefik.port=80"
+      - traefik
     volumes:
       # - production_django_media:/usr/share/nginx/media:ro
       - ./flags/media:/usr/share/nginx/media
