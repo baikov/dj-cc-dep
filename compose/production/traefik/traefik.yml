@@ -3,7 +3,7 @@ log:
 
 api:
   dashboard: true
-  insecure: true
+  # insecure: true
 
 entryPoints:
   web:
@@ -62,7 +62,7 @@ http:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
-        # - web
+        - web
         - web-secure
         # - media
       middlewares:
@@ -78,6 +78,8 @@ http:
       service: api@internal
       middlewares:
         - auth
+      tls:
+        certResolver: letsencrypt
 
     flower-secure-router:
       rule: "Host(`allflags.ru`)"
