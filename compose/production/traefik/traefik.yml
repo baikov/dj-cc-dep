@@ -37,7 +37,7 @@ certificatesResolvers:
 http:
   routers:
     dashboard:
-      rule: Host(`traefik.allflags.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      rule: Host(`allflags.ru`) && PathPrefix(`/dashboard`))
       service: api@internal
       middlewares:
         - auth
