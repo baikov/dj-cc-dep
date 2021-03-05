@@ -46,7 +46,7 @@ http:
         certResolver: letsencrypt
     
     media:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
+      rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
         # - web
