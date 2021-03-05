@@ -19,7 +19,7 @@ entryPoints:
     address: ":5555"
   
   media:
-    address: ":8888"
+    address: ":443"
 
 certificatesResolvers:
   letsencrypt:
