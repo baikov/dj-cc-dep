@@ -45,8 +45,8 @@ http:
       middlewares:
         # - csrf
         - auth
-      # tls:
-      #   certResolver: letsencrypt
+      tls:
+        certResolver: letsencrypt
 
     web-secure-router:
       rule: "Host(`allflags.ru`) || Host(`www.allflags.ru`)"
