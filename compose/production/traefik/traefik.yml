@@ -1,6 +1,9 @@
 log:
   level: INFO
 
+api:
+  dashboard: true
+
 entryPoints:
   web:
     # http
@@ -33,6 +36,12 @@ certificatesResolvers:
 
 http:
   routers:
+    dashboard:
+      rule: Host(`traefik.allflags.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      service: api@internal
+      middlewares:
+        - auth
+
     web-secure-router:
       rule: "Host(`allflags.ru`) || Host(`www.allflags.ru`)"
       
@@ -73,6 +82,12 @@ http:
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
         hostsProxyHeaders: ["X-CSRFToken"]
+
+    auth:
+      basicAuth:
+        users:
+          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+          - "test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0"
 
   services:
     django:
