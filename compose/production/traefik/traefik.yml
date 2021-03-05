@@ -1,6 +1,6 @@
 log:
   level: INFO
-
+accessLog: {}
 api:
   dashboard: true
   # insecure: true
