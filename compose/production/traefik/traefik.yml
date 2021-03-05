@@ -48,12 +48,12 @@ http:
         certResolver: letsencrypt
 
     media:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
-      # rule: "Host(`allflags.ru`)"
-      # entryPoints:
-      #   # - web
-      #   - web-secure
+      rule: "(Host(`allflags.ru`) || Host(`www.allflags.ru`)) && PathPrefix(`/media`)"
+      entryPoints:
+        - web
+        - web-secure
         # - media
+      priority: 10
       middlewares:
         - csrf
       service: media
@@ -65,9 +65,10 @@ http:
       
       entryPoints:
         - web-secure
+      priority: 2
       middlewares:
         - csrf
-      service: media
+      service: django
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
