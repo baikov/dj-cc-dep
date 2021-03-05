@@ -18,6 +18,9 @@ entryPoints:
   flower:
     address: ":5555"
 
+  django-media:
+    address: ":6688"
+
 certificatesResolvers:
   letsencrypt:
     # https://docs.traefik.io/master/https/acme/#lets-encrypt
@@ -45,8 +48,9 @@ http:
     web-media-router:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       entryPoints:
-        - web-secure
+        # - web-secure
         # - web
+        - django-media
       middlewares:
         - csrf
       service: django-media
@@ -78,7 +82,8 @@ http:
     django-media:
       loadBalancer:
         servers:
-          - url: http://nginx:80
+          # - url: http://nginx:80
+          - url: http://nginx:6688
 
     flower:
       loadBalancer:
