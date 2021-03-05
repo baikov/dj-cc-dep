@@ -38,13 +38,25 @@ certificatesResolvers:
 
 http:
   routers:
-
     dashboard:
       rule: "Host(`allflags.ru`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       service: api@internal
       middlewares:
         - csrf
         - auth
+      tls:
+        certResolver: letsencrypt
+
+    media:
+      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
+      # rule: "Host(`allflags.ru`)"
+      entryPoints:
+        # - web
+        - web-secure
+        # - media
+      middlewares:
+        - csrf
+      service: media
       tls:
         certResolver: letsencrypt
 
@@ -58,19 +70,6 @@ http:
       service: django
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt
-    
-    media:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
-      # rule: "Host(`allflags.ru`)"
-      entryPoints:
-        # - web
-        - web-secure
-        # - media
-      middlewares:
-        - csrf
-      service: media
-      tls:
         certResolver: letsencrypt
 
     flower-secure-router:
