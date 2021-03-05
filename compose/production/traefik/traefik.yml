@@ -22,8 +22,8 @@ entryPoints:
   flower:
     address: ":5555"
   
-  traefik:
-    address: ":8080"
+  # traefik:
+  #   address: ":8080"
   
 
 certificatesResolvers:
@@ -40,11 +40,11 @@ http:
   routers:
 
     dashboard:
-      rule: Host(`allflags.ru`) && PathPrefix(`/dashboard`)
+      rule: Host(`allflags.ru`) && PathPrefix(`/dashboard/`)
       service: api@internal
       middlewares:
-        - auth
         - csrf
+        - auth
       tls:
         certResolver: letsencrypt
 
@@ -61,7 +61,7 @@ http:
         certResolver: letsencrypt
     
     media:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
+      rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
         # - web
@@ -79,20 +79,17 @@ http:
         - flower
       service: flower
       tls:
-        # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
 
   middlewares:
     csrf:
-      # https://docs.traefik.io/master/middlewares/headers/#hostsproxyheaders
-      # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
         hostsProxyHeaders: ["X-CSRFToken"]
     
     auth:
       basicAuth:
         users:
-          - "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/"
+          - "test:$apr1$IwjHZbRe$gXhMdI3EYhW2Npt7F6Jjs1"
           - "test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0"
 
   services:
