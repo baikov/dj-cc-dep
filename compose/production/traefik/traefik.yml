@@ -48,8 +48,8 @@ http:
        - web-secure
         # - web
 
-      # middlewares:
-      #   - csrf
+      middlewares:
+        - csrf
       service: django-media
       tls:
         certResolver: letsencrypt
