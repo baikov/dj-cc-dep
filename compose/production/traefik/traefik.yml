@@ -83,7 +83,7 @@ http:
     media:
       loadBalancer:
         servers:
-          - url: http://nginx:8088
+          - url: http://nginx:80
 
     flower:
       loadBalancer:
