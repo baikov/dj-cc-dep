@@ -49,7 +49,8 @@ http:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
-        - web-secure
+        - web
+        # - web-secure
         # - media
 
       middlewares:
@@ -83,7 +84,7 @@ http:
     media:
       loadBalancer:
         servers:
-          - url: http://nginx:8888
+          - url: http://nginx:80
 
     flower:
       loadBalancer:
