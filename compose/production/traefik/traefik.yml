@@ -19,7 +19,7 @@ entryPoints:
     address: ":5555"
   
   media:
-    address: ":443"
+    address: ":8888"
 
 certificatesResolvers:
   letsencrypt:
@@ -83,7 +83,7 @@ http:
     media:
       loadBalancer:
         servers:
-          - url: http://nginx:443
+          - url: http://nginx:8888
 
     flower:
       loadBalancer:
