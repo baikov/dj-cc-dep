@@ -49,8 +49,8 @@ http:
       rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
-        - web-secure
-        # - media
+        # - web-secure
+        - media
 
       # middlewares:
       #   - csrf
