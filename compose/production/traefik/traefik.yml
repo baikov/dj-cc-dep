@@ -25,8 +25,8 @@ entryPoints:
   traefik:
     address: ":8080"
   
-  media:
-    address: ":80"
+  # media:
+  #   address: ":80"
 
 certificatesResolvers:
   letsencrypt:
@@ -59,12 +59,12 @@ http:
         certResolver: letsencrypt
     
     media:
-      rule: "Host(`allflags.ru`) && PathPrefix(`/media/`)"
+      rule: "Host(`allflags.ru`) && PathPrefix(`/media`)"
       # rule: "Host(`allflags.ru`)"
       entryPoints:
         # - web
-        # - web-secure
-        - media
+        - web-secure
+        # - media
       middlewares:
         - csrf
       service: media
