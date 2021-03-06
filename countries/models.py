@@ -1,4 +1,4 @@
-from config.settings.base import MEDIA_ROOT, MEDIA_URL
+from config.settings.base import MEDIA_ROOT
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
@@ -178,7 +178,7 @@ class HistoricalFlag(models.Model):
     # period = models.CharField(verbose_name='Период использования', max_length=100, blank=True)
     # image = models.ImageField(blank=True)
     image_url = models.URLField(verbose_name='Ссылка на изображение', max_length=300)
-    image_path = FilePathField(path=f'{MEDIA_URL}/historical-flags', blank=True, recursive=True)
+    image_path = FilePathField(path=f'{MEDIA_ROOT}/historical-flags', blank=True, recursive=True)
     description = models.TextField(verbose_name='Описание', blank=True)
 
     def __str__(self):
