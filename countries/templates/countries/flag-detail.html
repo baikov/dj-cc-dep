@@ -110,7 +110,7 @@
             {% for h_flag in historical %}
             <div class="col-md-4 col-sm-6 col-sx-12 pb-3">
                 <div class="card">
-                    <img src="{{MEDIA_URL}}historical-flags/{{h_flag.country.iso_code_a2}}/{{h_flag.country.iso_code_a2}}-{{h_flag.from_year}}-{{h_flag.to_year}}.svg" class="card-img-top img-thumbnail">
+                    <img src="{{MEDIA_URL}}historical-flags{{h_flag.img_path}}" class="card-img-top img-thumbnail">
                     <div class="card-body">
                     <h4 class="card-title">{{h_flag.from_year}}-{{h_flag.to_year}} {{h_flag.title}}</h4>
                     <p class="card-text">{{h_flag.description}}</p>
