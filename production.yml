@@ -13,8 +13,8 @@ services:
       dockerfile: ./compose/production/django/Dockerfile
     image: flags_production_django
     volumes:
-      # - production_django_media:/app/flags/media
-      - ./flags/media:/app/flags/media
+      - production_django_media:/app/flags/media
+      # - ./flags/media:/app/flags/media
     depends_on:
       - postgres
       - redis
@@ -47,8 +47,6 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
       - "0.0.0.0:5555:5555"
-      - "8080:8080"
-      # - "0.0.0.0:8888:8888"
 
   redis:
     image: redis:5.0
@@ -76,5 +74,5 @@ services:
     depends_on:
       - django
     volumes:
-      # - production_django_media:/usr/share/nginx/media:ro
-      - ./flags/media:/usr/share/nginx/media
+      - production_django_media:/usr/share/nginx/media:ro
+      # - ./flags/media:/usr/share/nginx/media
