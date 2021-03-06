@@ -187,10 +187,9 @@ class HistoricalFlag(models.Model):
 
 @receiver(signals.pre_save, sender=HistoricalFlag)
 def on_create_historical_flag(sender, instance, **kwargs):
-    if not instance.image_url:
+    if not instance.image_path:
         file = get_historical_flag_img(
             instance.image_url, instance.from_year, instance.to_year, instance.country.iso_code_a2)
-    if not instance.image_path:
         instance.image_path = f'{MEDIA_ROOT}/historical-flags/{file}'
 
 
